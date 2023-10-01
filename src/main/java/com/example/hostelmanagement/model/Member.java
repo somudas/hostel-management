@@ -16,7 +16,7 @@ public class Member {
 
     @Getter
     @NotNull
-    private String role;
+    private Role role;
 
     @Getter
     @Size(min=1, max=15)
@@ -36,7 +36,7 @@ public class Member {
 
     @Getter
     @NotNull
-    private String branch;
+    private Branch branch;
 
     @Getter
     @NotNull
