@@ -10,3 +10,17 @@ CREATE TABLE IF NOT EXISTS MEMBERS(
     PHONENUMBER CHAR(10) NOT NULL,
     PRIMARY KEY(MID, ROLE)
 );
+
+CREATE TABLE IF NOT EXISTS COMPLAINTS(
+                                      cmpId  int AUTO_INCREMENT primary key,
+                                      title   VARCHAR(50) NOT NULL,
+                                      description    VARCHAR(250) NOT NULL,
+                                      status       ENUM('RESOLVED', 'UNRESOLVED') NOT NULL,
+                                      feedback VARCHAR(50),
+                                      postedById INT(8) NOT NULL,
+                                      postedByRole ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN') NOT NULL,
+                                      postedAt datetime default current_timestamp not null,
+
+                                    FOREIGN KEY (postedById, postedByRole) REFERENCES MEMBERS(MID, ROLE)
+
+);

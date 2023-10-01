@@ -1,5 +1,6 @@
 package com.example.hostelmanagement.controller;
 
+import com.example.hostelmanagement.model.Complaint;
 import com.example.hostelmanagement.model.Member;
 import com.example.hostelmanagement.service.MemberService;
 import jakarta.validation.constraints.NotNull;
@@ -26,12 +27,17 @@ public class MemberController {
     public List<Member> listAll(){
         return memberService.viewAll();
     }
+
+    @GetMapping("/api/member/complaints")
+    @ResponseBody
+    public List<Complaint> listAllComplaints(@NotNull @RequestBody Member m){
+        return memberService.getAllComplaintsOfMember(m);
+    }
     @PostMapping("/api/member/add")
     @ResponseBody
     public String insert(@NotNull @RequestBody Member m)
     {
         if (memberService.insertMember(m) == 1) return "SUCCESS";
         return "FAILED TO INSERT";
-
     }
 }
