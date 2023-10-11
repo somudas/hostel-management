@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+</head>
+<link rel="stylesheet" href="style.css">
+<body>
+    <div th:replace="fragments/headers :: header"></div>
+
+    <div class="cardViewer" style=" width: 30%;margin-inline: auto;">
+        <div class="card">
+            <h1 style="margin-top: 24px;display: flex; font-size: x-large">Login Details</h1>
+            <div th:if="${error}" class="error">wrong credentials</div>
+            <form id="loginform" name="loginform" action="/login" method="post">
+                <div class="form">
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px">
+                        <label for="role">Role</label><select id="role" name="role">
+                            <option value="student">student</option>
+                            <option value="admin">admin</option>
+                            <option value="staff">staff</option>
+                        </select>
+                    </div>
+                    <label>Institute Id</label>
+                    <input type="text" name="insti_id" id="insti_id">
+                    <label>Password</label>
+                    <input type="hidden" name="username" id="username">
+                    <input type="password" name="password" id="password">
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $('#loginform').submit(function(event) {
+                        event.preventDefault();
+
+                        var value1 = $('#role').val();
+                        var value2 = $('#insti_id').val();
+                        var concatenatedValue = value1 + ' ' + value2;
+
+                        $('#username').val(concatenatedValue);
+
+                        $(this).unbind('submit').submit();
+                    });
+                });
+            </script>
+        </div>
+    </div>
+
+
+
+
+
+
+<!--    <div th:replace="fragments/headers :: footer"></div>-->
+
+</body>
+</html>
