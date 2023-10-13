@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <title>Login Page</title>
 </head>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
 <body>
-    <div th:replace="fragments/headers :: header"></div>
+    <div th:replace="~{fragments/headers :: header}"></div>
 
     <div class="cardViewer" style=" width: 30%;margin-inline: auto;">
         <div class="card">
-            <h1 style="margin-top: 24px;display: flex; font-size: x-large">Login Details</h1>
+            <h1 style="margin-top: 24px;display: flex;">Login Details</h1>
             <div th:if="${error}" class="error">wrong credentials</div>
             <form id="loginform" name="loginform" action="/login" method="post">
                 <div class="form">
@@ -26,18 +28,17 @@
                     <label>Password</label>
                     <input type="hidden" name="username" id="username">
                     <input type="password" name="password" id="password">
-                    <button type="submit">Login</button>
+                    <button id="submitlogin" type="submit">Login</button>
                 </div>
             </form>
             <script type="text/javascript">
+                console.log("hello world");
                 $(document).ready(function() {
                     $('#loginform').submit(function(event) {
                         event.preventDefault();
-
                         var value1 = $('#role').val();
                         var value2 = $('#insti_id').val();
-                        var concatenatedValue = value1 + ' ' + value2;
-
+                        var concatenatedValue = value1 + value2;
                         $('#username').val(concatenatedValue);
 
                         $(this).unbind('submit').submit();

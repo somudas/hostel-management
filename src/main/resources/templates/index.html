@@ -1,25 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
 </head>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
 <body>
-    <div class="header">
-        <div style="font-weight: bolder; font-size: x-large">H-manage+</div>
-        <div class="menu">
-            <a href="/">Home</a>
-            <a href="#">Complaints</a>
-            <a href="#">Inventory</a>
-            <a href="#">Chat</a>
-        </div>
-        <div>
-            <a href="/login" style="text-decoration: none; color: white; margin-right: 10px">Login</a>
-            <a href="/register" style="text-decoration: none; color: white">Register</a>
-        </div>
-    </div>
-
+    <div th:replace="~{fragments/headers :: header}"></div>
     <div class="cardViewer">
         <div class="card">
             <h1>Welcome to H-manage+</h1>

@@ -28,7 +28,7 @@ body {
 .card {
     width: 70%;
     background-color: white;
-    box-shadow: 0 0 10px grey;
+    box-shadow: 0 0 12px grey;
     border-radius: 10px;
     padding: 8px;
     padding-inline: 24px;
@@ -67,11 +67,16 @@ input{
     border-radius: 10px;
     width: 100%;
     padding: 12px;
-    border: none;
+    border: 1px solid blue;
+    background-color: rgba(232, 240, 254, 1.0);
 }
-.form > input[type=text]:focus {
-    border: 1px solid royalblue;
+input:focus {
+    border-radius: 18px;
+    border: 2px solid blue;
+    outline: none !important;
 }
+
+
 .form > button {
     margin-top: 18px;
     padding: 8px;
@@ -94,7 +99,8 @@ select {
 .error {
     background-color: rgba(220, 20, 60, 0.74);
     color: white;
-    padding: 8px;
+    padding: 12px;
+    padding-inline: 18px;
     margin-block: 8px;
     border-radius: 8px;
 }

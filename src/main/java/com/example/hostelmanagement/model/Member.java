@@ -31,7 +31,7 @@ public class Member {
     // TODO: potential bug -> what happens when year>2050?
     @Getter
     @Range(min=1919, max=2050)
-    @NotBlank
+    @NotNull
     private Integer batch;
 
     @Getter

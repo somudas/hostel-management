@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<body>
+    <div th:replace="fragments/headers :: header"></div>
+
+    <div class="cardViewer">
+        <div class="card" style="width: 50%">
+            <h1>Register Here</h1>
+            <div th:if="${error}" class="error" th:text="${error_message}"></div>
+            <form th:action="@{/register}" th:object="${member}" method="post">
+                <div class="form">
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px">
+                        <label for="role">Role</label><select id="role" name="role" th:field="*{role}">
+                        <option value="student">student</option>
+                        <option value="admin">admin</option>
+                        <option value="staff">staff</option>
+                        </select>
+                    </div>
+                    <label for="insti_id">Institute Id</label>
+                    <input type="number" name="insti_id" id="insti_id" th:field="*{mid}" required>
+
+                    <label for="fname">First Name</label>
+                    <input type="text" name="fname" id="fname" th:field="*{firstname}" required>
+
+                    <label for="lname">Last Name</label>
+                    <input type="text" name="lname" id="lname" th:field="*{lastname}">
+
+                    <label for="batch">Batch</label>
+                    <input type="number" minlength="4" maxlength="4" name="batch" id="batch" th:field="*{batch}" required>
+
+                    <label for="branch">Branch</label><select id="branch" name="branch" th:field="*{branch}">
+                        <option value="CSE">CSE</option>
+                        <option value="MNC">MNC</option>
+                        <option value="ECE">ECE</option>
+                        <option value="EEE">EEE</option>
+                        <option value="MEC">MEC</option>
+                        <option value="CHE">CHE</option>
+                        <option value="MET">MET</option>
+                        <option value="MIN">MIN</option>
+                        <option value="CIV">CIV</option>
+                        <option value="CER">CER</option>
+                        <option value="PHE">PHE</option>
+                        <option value="APD">APD</option>
+                        <option value="NON">NON</option>
+                    </select>
+
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" name="dob" id="dob" th:field="*{dateofbirth}" required>
+
+                    <label for="email">Email</label>
+                    <input type="email" minlength="1" name="email" id="email" th:field="*{email}" required>
+
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" name="phone" id="phone" pattern="[0-9]{10}" minlength="10" maxlength="10" th:field="*{phonenumber}" required>
+
+                    <label for="password1">Password</label>
+                    <input type="password" name="password1" id="password1" required>
+                    <label for="password2">Confirm Password</label>
+                    <input type="password" name="password2" id="password2" required>
+                    <button type="submit">Register</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-<div th:fragment="header">
+<div th:fragment="header" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div class="header">
         <div style="font-weight: bolder; font-size: x-large">H-manage+</div>
         <div class="menu">
@@ -8,8 +8,15 @@
             <a href="#">Chat</a>
         </div>
         <div>
-            <a href="/login" style="text-decoration: none; color: white; margin-right: 10px">Login</a>
-            <a href="/register" style="text-decoration: none; color: white">Register</a>
+            <div sec:authorize="isAuthenticated()">
+                <form action="/logout" method="post">
+                    <button type="submit" style="cursor: pointer; font-size: medium; background: none; border: none; color: white; font-family: 'Montserrat', sans-serif">Logout</button>
+                </form>
+            </div>
+            <div sec:authorize="!isAuthenticated()">
+                <a href="/login" style="text-decoration: none; color: white; margin-right: 10px">Login</a>
+                <a href="/register" style="text-decoration: none; color: white">Register</a>
+            </div>
         </div>
     </div>
 

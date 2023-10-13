@@ -33,11 +33,5 @@ public class MemberController {
     public List<Complaint> listAllComplaints(@NotNull @RequestBody Member m){
         return memberService.getAllComplaintsOfMember(m);
     }
-    @PostMapping("/api/member/add")
-    @ResponseBody
-    public String insert(@NotNull @RequestBody Member m)
-    {
-        if (memberService.insertMember(m) == 1) return "SUCCESS";
-        return "FAILED TO INSERT";
-    }
+
 }
