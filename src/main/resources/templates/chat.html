@@ -14,24 +14,20 @@
             <div style="display: flex; flex-direction: row; width: 100%">
                 <div style="width: 80%; display: flex; flex-direction: column; gap: 12px; padding-block: 20px;">
                     <label for="newgroupname">
-                        <input required onkeyup="updateGroupName()" id="newgroupname" type="text" placeholder="Group Name" style="background-color: white; width: 50%">
+                        <input name="newGroupName" required onkeyup="updateGroupName()" id="newgroupname" type="text" placeholder="Group Name" style="background-color: white; width: 50%">
                     </label>
                     <label for="newgroupdesc">
-                        <input id="newgroupdesc" type="text" placeholder="Group Description" style="background-color: white; width: 80%">
+                        <input name="newGroupName"  id="newgroupdesc" type="text" placeholder="Group Description" style="background-color: white; width: 80%">
                     </label>
                     <div id="countmember" style="font-weight: 500">Add members(0 added) </div>
                     <div class="newgroupmemberlist" onclick="updateMemberView()">
-                        <div style="display: flex; flex-direction: row; justify-content: flex-start">
-                            <input style="width: 20%" type="checkbox" name="ujjwal" id="ujjwal"/>
-                            <label for="ujjwal">Ujjwal</label>
-                        </div>
-                        <div style="display: flex; flex-direction: row;">
-                            <input style="width: 20%" type="checkbox" name="ujjwal1" id="ujjwal1"/>
-                            <label for="ujjwal1">Satyam</label>
-                        </div>
-                        <div style="display: flex; flex-direction: row;">
-                            <input style="width: 20%" type="checkbox" name="ujjwal2" id="ujjwal2"/>
-                            <label for="ujjwal2">nachi</label>
+                        <div th:each="member: ${allMembers}">
+                            <div style="display: flex; flex-direction: row; justify-content: flex-start" >
+                                <input style="width: 20%" type="checkbox" value="sdfs" th:id="${member.mid}"/>
+                                <input type="hidden"  name="mid" th:value="${member.mid}">
+                                <input type="hidden"  name="role" th:value="${member.role}">
+                                <label th:for="${member.mid}" th:text="${member.firstname + ' ' + member.lastname}"></label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -41,9 +37,9 @@
                                     display: flex; justify-content: center; align-items: center;
                                 ">WS</div>
                         <div>group name</div>
-                        <div style="font-size: small">0 Participants</div>
+                        <div id="totalParticipants" style="font-size: small">0 Participants</div>
                     </div>
-                    <button id="createGroupSubmit" type="submit">Create</button>
+                    <button id="createGroupSubmit" onclick="createGroup()">Create</button>
                 </div>
             </div>
 
@@ -58,80 +54,114 @@
             </label>
             <button id="newgroup" onclick="newGroup()">+</button>
             <div class="grouplist">
-                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='water saraiya', last_msg='last msg goes here', count='1')"></div>
-                <div th:replace="fragments/chatFragments :: chatGroup(initials='SD', group_name='satvik mess', last_msg='last msg goes here', count='1')"></div>
-                <div th:replace="fragments/chatFragments :: chatGroup(initials='QW', group_name='saraiya mess 1', last_msg='last msg goes here', count='12')"></div>
-                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='saraiya mess 2', last_msg='last msg goes here', count='121')"></div>
-                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='Dhobi union', last_msg='last msg goes here', count='10')"></div>
-                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='hello world', last_msg='last msg goes here', count='1')"></div>
-                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='Acads group', last_msg='last msg goes here', count='1')"></div>
-                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='Kuldeep dhobi', last_msg='last msg goes here', count='1')"></div>
-                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='hello world group', last_msg='last msg goes here', count='1')"></div>
-                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='hello world group', last_msg='last msg goes here', count='1')"></div>
-                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='hello world group', last_msg='last msg goes here', count='1')"></div>
-                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='hello world group', last_msg='last msg goes here', count='1')"></div>
+                <div th:each="group: ${messageGroups}">
+                    <div style="display: flex; flex-direction: row; border-radius: 16px; justify-content: space-between; padding: 12px" class="clickableGroup" th:groupId="${group.grpId}">
+                        <div class="groupBody">
+                            <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
+                                 th:text="${group.name[0]}"></div>
+                            <div style="display: flex; flex-direction: column">
+                                <div th:text="${group.name}"></div>
+                                <div style="font-size: small" th:text="asd"></div>
+                            </div>
+                        </div>
+                        <div style="height: 20px; min-width: 20px; color: white; font-size: small; padding-inline: 6px; background-color: #00c73e; border-radius: 10px; display: flex; justify-content: center; align-items: center;"
+                             th:text="123"></div>
+                    </div>
+                </div>
+
             </div>
         </div>
         <div class="chatMiddle">
-            <div class="chatBody">
-                <div class="chatHeader">
-                    <div style="display:flex; flex-direction: row; align-items: center; gap: 10px">
-                        <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
-                            WS
+            <div th:each="group: ${messageGroups}">
+                <div class="chatBody" th:groupId="${group.grpId}">
+                    <div class="chatHeader">
+                        <div style="display:flex; flex-direction: row; align-items: center; gap: 10px">
+                            <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;" th:text="${group.name[0]}">
+                            </div>
+                            <div th:text="${group.name}">
+                            </div>
                         </div>
                         <div>
-                            Water Saraiya
+                            <button>+</button>
                         </div>
                     </div>
-                    <div>
-                        <button>+</button>
+                    <div class="chatList">
+                        <div th:each="message: ${group.messages}">
+                            <div style="display: flex; flex-direction: row; justify-content: space-between; padding: 12px">
+                                <div class="groupBody">
+                                    <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
+                                         th:text="${message.sentByRole[0]}"></div>
+                                    <div style="display: flex; flex-direction: column;">
+                                        <div th:text="${message.sentById}"></div>
+                                        <div style="font-size: small" th:text="${message.content}"></div>
+                                    </div>
+                                </div>
+                                <div th:text="${message.sentAt}"></div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="chatList">
-                    <div th:replace="fragments/chatFragments :: chatElement(initials='RJ', sender='raju', msg='uncle ji gala sukh rha h', time='8:30pm')"></div>
-                    <div th:replace="fragments/chatFragments :: chatElement(initials='UC', sender='Uncle', msg='toh ham kya kre', time='8:31pm')"></div>
-                    <div th:replace="fragments/chatFragments :: chatElement(initials='RJ', sender='raju', msg='uncle ji plsssss', time='8:32pm')"></div>
-                    <div th:replace="fragments/chatFragments :: chatElement(initials='UC', sender='Uncle', msg='terii mk....', time='8:33pm')"></div>
-                    <div th:replace="fragments/chatFragments :: chatElement(initials='RJ', sender='raju', msg='uncle ji gala sukh rha h', time='8:34pm')"></div>
-                    <div th:replace="fragments/chatFragments :: chatElement(initials='RJ', sender='raju', msg='uncle ji gala sukh rha h', time='8:34pm')"></div>
-                    <div th:replace="fragments/chatFragments :: chatElement(initials='RJ', sender='raju', msg='uncle ji gala sukh rha h', time='8:34pm')"></div>
-                    <div th:replace="fragments/chatFragments :: chatElement(initials='RJ', sender='raju', msg='uncle ji gala sukh rha h', time='8:34pm')"></div>
-                    <div th:replace="fragments/chatFragments :: chatElement(initials='RJ', sender='raju', msg='uncle ji gala sukh rha h', time='8:34pm')"></div>
-                    <div th:replace="fragments/chatFragments :: chatElement(initials='RJ', sender='raju', msg='uncle ji gala sukh rha h', time='8:34pm')"></div>
-                </div>
-                <div class="chatInput">
-                    <label style="width: 90%" for="message">
-                    <input placeholder="Type a message" style="font-family: Montserrat, sans-serif;background-color: white;" type="text" name="message" id="message"></label>
-                    <button type="submit">→</button>
+                    <div class="chatInput">
+                        <label style="width: 90%" for="message_${group.grpId}">
+                        <input placeholder="Type a message" style="font-family: Montserrat, sans-serif;background-color: white;" type="text" name="message" id="message_${group.grpId}"></label>
+                        <button type="submit">→</button>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="chatRight">
-            <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; padding: 20px">
-                <div style="width: 55px; height: 55px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
-                     >WS</div>
-                <div style="font-size: x-large">Water Saraiya</div>
-                <div style="font-size: small; max-height: 10vh; padding-inline: 12px; overflow-y: hidden">
-                    Mostly there are horizontal arrows encoded in Unicode: 🢠 to the left and to the right 🢡.
+            <div th:each="group: ${messageGroups}">
+                <div th:groupId="${group.grpId}">
+                    <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; padding: 20px">
+                        <div style="width: 55px; height: 55px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
+                             th:text="${group.name[0]}"></div>
+                        <div style="font-size: x-large" th:text="${group.name}"></div>
+                        <div style="font-size: small; max-height: 10vh; padding-inline: 12px; overflow-y: hidden" th:text="${group.description}">
+                        </div>
+                    </div>
+                    <div style="overflow-y: scroll; height: 56vh; display: flex; flex-direction: column; gap: 10px; padding: 12px;">
+                        <div th:each="member: ${group.members}">
+                            <div class="groupBody">
+                                <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
+                                     th:text="${member.firstname[0] + member.lastname[0]}"></div>
+                                <div style="display: flex; flex-direction: column;">
+                                    <div th:text="${member.firstname + ' ' + member.lastname}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div style="overflow-y: scroll; height: 56vh; display: flex; flex-direction: column; gap: 10px; padding: 12px;">
-                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
-                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
-                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
-                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
-                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
-                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
-                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
-                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
-                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
-                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
             </div>
         </div>
 
     </div>
 
     <script type="text/javascript">
+
+        let leftList = document.getElementsByClassName("grouplist")[0].children;
+        for (let i=0;i<leftList.length;i++) {
+            let x = leftList[i].children[0];
+            let idx = x.getAttribute("groupId");
+            x.addEventListener("click", (e) => {
+                let par = document.getElementsByClassName("chatMiddle")[0].children;
+                for (let j=0;j<par.length;j++) {
+                    if(par[j].children[0].getAttribute("groupId") == idx) {
+                        par[j].children[0].style.display = "block";
+                    }else{
+                        par[j].children[0].style.display = "none";
+                    }
+                }
+                par = document.getElementsByClassName("chatRight")[0].children;
+                for (let j=0;j<par.length;j++) {
+                    if(par[j].children[0].getAttribute("groupId") == idx) {
+                        par[j].children[0].style.display = "block";
+                    }else{
+                        par[j].children[0].style.display = "none";
+                    }
+                }
+            });
+        }
+
+
         function searchGroups() {
             let inp = document.getElementById("searchGroups").value;
             let allGroups = document.getElementsByClassName("clickableGroup");
@@ -146,46 +176,91 @@
         }
         function updateGroupName() {
             let str = document.getElementById("newgroupname").value.split(' ');
-            console.log(str);
+            // console.log(str);
             let fnl = "";
             if(str[0][0] !== undefined ) fnl += str[0][0].toUpperCase();
             if(str[1][0] !== undefined ) fnl += str[1][0].toUpperCase();
-            console.log(fnl);
-            document.getElementsByClassName("groupPreview")[0].children[0].innerHTML = fnl;
-            document.getElementsByClassName("groupPreview")[0].children[1].innerHTML = document.getElementById("newgroupname").value;
+            // console.log(fnl);
+            document.getElementsByClassName("groupPreview")[0].children[0].children[0].innerHTML = fnl;
+            document.getElementsByClassName("groupPreview")[0].children[0].children[1].innerHTML = document.getElementById("newgroupname").value;
         }
 
         let members = document.getElementsByClassName("newgroupmemberlist")[0].children;
         for(let i=0; i<members.length; i++) {
+            console.log(members[i]);
             members[i].addEventListener("mouseover", function() {
-               members[i].style.backgroundColor = "#e3e3e3";
+               members[i].children[0].style.backgroundColor = "#e3e3e3";
             });
             members[i].addEventListener("mouseleave", function() {
-                if(!members[i].children[0].checked)
-                    members[i].style.backgroundColor = "white";
+                if(!members[i].children[0].children[0].checked)
+                    members[i].children[0].style.backgroundColor = "white";
             });
         }
         function updateMemberView() {
             let members = document.getElementsByClassName("newgroupmemberlist")[0].children;
             let cnt = 0;
             for(let i=0; i<members.length; i++) {
-                let inpBox = members[i].children[0];
-                // console.log(inpBox);
+                let inpBox = members[i].children[0].children[0];
+                console.log(inpBox);
                 if(inpBox.checked) {
                     cnt++;
-                    members[i].style.backgroundColor = "#e5e5e5";
+                    members[i].children[0].style.backgroundColor = "#e5e5e5";
                 }else{
-                    members[i].style.backgroundColor = "white";
+                    members[i].children[0].style.backgroundColor = "white";
                 }
             }
             document.getElementById("countmember").innerHTML = `Add Members(${cnt} added.)`;
-            document.getElementsByClassName("groupPreview")[0].children[0].children[2].innerHTML = `${cnt} Participants`;
+            document.getElementById("totalParticipants").innerHTML = `${cnt} Participants`;
+            // document.getElementsByClassName("groupPreview")[0].children[0].children[2].innerHTML = `${cnt} Participants`;
 
         }
+        let modal = document.getElementsByClassName("modal")[0];
         function newGroup() {
-
+            modal.style.display = "flex";
+        }
+        window.onclick = function(event) {
+            if(event.target == modal) {
+                console.log("sdf")
+                modal.style.display = 'none';
+            }
         }
 
+        function createGroup(event) {
+            // event.preventDefault();
+            let grpName = document.getElementById("newgroupname").value;
+            if(grpName.length == 0) {
+                return;
+            }
+            let grpDesc = document.getElementById("newgroupdesc").value;
+            let members = []
+            let list = document.getElementsByClassName("newgroupmemberlist")[0].children;
+            for(let i=0;i<list.length;i++) {
+                let inpBoxes = list[i].children[0].children;
+                if(inpBoxes[0].checked) {
+                    let obj = {
+                        mid: inpBoxes[1].value,
+                        role: inpBoxes[2].value
+                    }
+                    members.push(obj)
+                }
+            }
+            const URL = "/api/create/group"
+            fetch(URL, {
+               method: "POST",
+               headers: {
+                   'Content-type': 'application/json'
+               },
+                body: JSON.stringify({
+                    name: grpName,
+                    description: grpDesc,
+                    members: members
+                })
+            }).then((e) => {
+                console.log(e);
+                location.reload();
+            });
+
+        }
     </script>
 
 </body>

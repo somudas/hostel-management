@@ -15,14 +15,14 @@
 
 <div th:fragment="chatElement">
   <div style="display: flex; flex-direction: row; justify-content: space-between; padding: 12px">
-  <div class="groupBody">
-    <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
-         th:text="${initials}"></div>
-    <div style="display: flex; flex-direction: column;">
-      <div th:text="${sender}"></div>
-      <div style="font-size: small" th:text="${msg}"></div>
+    <div class="groupBody">
+      <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
+           th:text="${initials}"></div>
+      <div style="display: flex; flex-direction: column;">
+        <div th:text="${sender}"></div>
+        <div style="font-size: small" th:text="${msg}"></div>
+      </div>
     </div>
-  </div>
     <div th:text="${time}"></div>
   </div>
 </div>

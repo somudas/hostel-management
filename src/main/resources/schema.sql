@@ -76,11 +76,6 @@ CREATE TABLE IF NOT EXISTS GROUP_MEMBERSHIP(
 
 
 
--- group details (groupName, groupDesc, groupAdmin)
-select * from MESSAGE_GROUP
-where grpId in (select grpId from GROUP_MEMBERSHIP where memberId = userId and memberRole = userRole);
-
--- group messages
 
 
 

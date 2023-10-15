@@ -48,13 +48,14 @@ public class WebConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf((cs) -> cs.ignoringRequestMatchers("/login", "/logout"))
+                .csrf(cs -> cs.disable())
                 .authorizeHttpRequests(
                 (authz) -> authz
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
                         .requestMatchers("/assets/**", "/chats", "/index..html", "/", "/logout", "/login", "/register").permitAll()
                         .requestMatchers("/student").hasAuthority("student")
-                        .anyRequest().denyAll()
+                        .requestMatchers("/api/create/group").permitAll()
+//                        .anyRequest().denyAll()
         ).formLogin((formlogin) ->  formlogin.loginPage("/login").permitAll())
                 .logout(logout -> logout.logoutSuccessUrl("/").permitAll())
         ;

@@ -223,12 +223,12 @@ button:hover {
     padding-inline: 4px;
 }
 .modal {
+    display: none;
     position: fixed;
     background-color: rgba(0, 0, 0, 0.2);
     z-index: 10;
     height: 100%;
     width: 100%;
-    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -250,7 +250,7 @@ button:hover {
     height: 20vh;
     overflow-y: scroll;
 }
-.newgroupmemberlist > div {
+.newgroupmemberlist > div > div {
     padding: 4px;
     border-radius: 6px;
 }
@@ -271,6 +271,12 @@ button:hover {
     padding: 8px;
     padding-inline: 34px;
 
+}
+.chatRight > div > div {
+    display: none;
+}
+.chatMiddle > div > div {
+    display: none;
 }
 
 /*.newgroupmemberlist > div > input {*/
