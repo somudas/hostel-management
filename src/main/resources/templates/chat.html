@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+</head>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+
+<body>
+    <div class="modal">
+        <div class="modalBody">
+
+            <div style="font-size: x-large; font-weight: bold">Create a New Group</div>
+            <div style="display: flex; flex-direction: row; width: 100%">
+                <div style="width: 80%; display: flex; flex-direction: column; gap: 12px; padding-block: 20px;">
+                    <label for="newgroupname">
+                        <input required onkeyup="updateGroupName()" id="newgroupname" type="text" placeholder="Group Name" style="background-color: white; width: 50%">
+                    </label>
+                    <label for="newgroupdesc">
+                        <input id="newgroupdesc" type="text" placeholder="Group Description" style="background-color: white; width: 80%">
+                    </label>
+                    <div id="countmember" style="font-weight: 500">Add members(0 added) </div>
+                    <div class="newgroupmemberlist" onclick="updateMemberView()">
+                        <div style="display: flex; flex-direction: row; justify-content: flex-start">
+                            <input style="width: 20%" type="checkbox" name="ujjwal" id="ujjwal"/>
+                            <label for="ujjwal">Ujjwal</label>
+                        </div>
+                        <div style="display: flex; flex-direction: row;">
+                            <input style="width: 20%" type="checkbox" name="ujjwal1" id="ujjwal1"/>
+                            <label for="ujjwal1">Satyam</label>
+                        </div>
+                        <div style="display: flex; flex-direction: row;">
+                            <input style="width: 20%" type="checkbox" name="ujjwal2" id="ujjwal2"/>
+                            <label for="ujjwal2">nachi</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="groupPreview">
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px">
+                        <div style="height: 60px; width: 60px; border-radius: 50%; background-color: hotpink;
+                                    display: flex; justify-content: center; align-items: center;
+                                ">WS</div>
+                        <div>group name</div>
+                        <div style="font-size: small">0 Participants</div>
+                    </div>
+                    <button id="createGroupSubmit" type="submit">Create</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div th:replace="~{fragments/headers :: header}"></div>
+    <div class="chatContainer">
+        <div class="chatLeft">
+            <label for="searchGroups" style="position: absolute; width: 25%; display: flex; flex-direction: row; justify-content: center; align-items: center; padding-bottom: 12px">
+                <input placeholder="Search"  onkeyup="searchGroups()" type="text" style="font-family: Montserrat, sans-serif;border-radius: 20px; width: 85%" id="searchGroups"/>
+            </label>
+            <button id="newgroup" onclick="newGroup()">+</button>
+            <div class="grouplist">
+                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='water saraiya', last_msg='last msg goes here', count='1')"></div>
+                <div th:replace="fragments/chatFragments :: chatGroup(initials='SD', group_name='satvik mess', last_msg='last msg goes here', count='1')"></div>
+                <div th:replace="fragments/chatFragments :: chatGroup(initials='QW', group_name='saraiya mess 1', last_msg='last msg goes here', count='12')"></div>
+                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='saraiya mess 2', last_msg='last msg goes here', count='121')"></div>
+                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='Dhobi union', last_msg='last msg goes here', count='10')"></div>
+                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='hello world', last_msg='last msg goes here', count='1')"></div>
+                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='Acads group', last_msg='last msg goes here', count='1')"></div>
+                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='Kuldeep dhobi', last_msg='last msg goes here', count='1')"></div>
+                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='hello world group', last_msg='last msg goes here', count='1')"></div>
+                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='hello world group', last_msg='last msg goes here', count='1')"></div>
+                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='hello world group', last_msg='last msg goes here', count='1')"></div>
+                <div th:replace="fragments/chatFragments :: chatGroup(initials='IG', group_name='hello world group', last_msg='last msg goes here', count='1')"></div>
+            </div>
+        </div>
+        <div class="chatMiddle">
+            <div class="chatBody">
+                <div class="chatHeader">
+                    <div style="display:flex; flex-direction: row; align-items: center; gap: 10px">
+                        <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                            WS
+                        </div>
+                        <div>
+                            Water Saraiya
+                        </div>
+                    </div>
+                    <div>
+                        <button>+</button>
+                    </div>
+                </div>
+                <div class="chatList">
+                    <div th:replace="fragments/chatFragments :: chatElement(initials='RJ', sender='raju', msg='uncle ji gala sukh rha h', time='8:30pm')"></div>
+                    <div th:replace="fragments/chatFragments :: chatElement(initials='UC', sender='Uncle', msg='toh ham kya kre', time='8:31pm')"></div>
+                    <div th:replace="fragments/chatFragments :: chatElement(initials='RJ', sender='raju', msg='uncle ji plsssss', time='8:32pm')"></div>
+                    <div th:replace="fragments/chatFragments :: chatElement(initials='UC', sender='Uncle', msg='terii mk....', time='8:33pm')"></div>
+                    <div th:replace="fragments/chatFragments :: chatElement(initials='RJ', sender='raju', msg='uncle ji gala sukh rha h', time='8:34pm')"></div>
+                    <div th:replace="fragments/chatFragments :: chatElement(initials='RJ', sender='raju', msg='uncle ji gala sukh rha h', time='8:34pm')"></div>
+                    <div th:replace="fragments/chatFragments :: chatElement(initials='RJ', sender='raju', msg='uncle ji gala sukh rha h', time='8:34pm')"></div>
+                    <div th:replace="fragments/chatFragments :: chatElement(initials='RJ', sender='raju', msg='uncle ji gala sukh rha h', time='8:34pm')"></div>
+                    <div th:replace="fragments/chatFragments :: chatElement(initials='RJ', sender='raju', msg='uncle ji gala sukh rha h', time='8:34pm')"></div>
+                    <div th:replace="fragments/chatFragments :: chatElement(initials='RJ', sender='raju', msg='uncle ji gala sukh rha h', time='8:34pm')"></div>
+                </div>
+                <div class="chatInput">
+                    <label style="width: 90%" for="message">
+                    <input placeholder="Type a message" style="font-family: Montserrat, sans-serif;background-color: white;" type="text" name="message" id="message"></label>
+                    <button type="submit">→</button>
+                </div>
+            </div>
+        </div>
+        <div class="chatRight">
+            <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; padding: 20px">
+                <div style="width: 55px; height: 55px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
+                     >WS</div>
+                <div style="font-size: x-large">Water Saraiya</div>
+                <div style="font-size: small; max-height: 10vh; padding-inline: 12px; overflow-y: hidden">
+                    Mostly there are horizontal arrows encoded in Unicode: 🢠 to the left and to the right 🢡.
+                </div>
+            </div>
+            <div style="overflow-y: scroll; height: 56vh; display: flex; flex-direction: column; gap: 10px; padding: 12px;">
+                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
+                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
+                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
+                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
+                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
+                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
+                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
+                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
+                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
+                <div th:replace="fragments/chatFragments :: Contact(initials='SD', sender='soumyadeep')"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+        function searchGroups() {
+            let inp = document.getElementById("searchGroups").value;
+            let allGroups = document.getElementsByClassName("clickableGroup");
+            console.log(allGroups);
+            for(let i = 0; i < allGroups.length; i++) {
+                if (allGroups[i].innerHTML.toLowerCase().includes(inp)) {
+                    allGroups[i].style.display = "flex";
+                }else{
+                    allGroups[i].style.display = "none";
+                }
+            }
+        }
+        function updateGroupName() {
+            let str = document.getElementById("newgroupname").value.split(' ');
+            console.log(str);
+            let fnl = "";
+            if(str[0][0] !== undefined ) fnl += str[0][0].toUpperCase();
+            if(str[1][0] !== undefined ) fnl += str[1][0].toUpperCase();
+            console.log(fnl);
+            document.getElementsByClassName("groupPreview")[0].children[0].innerHTML = fnl;
+            document.getElementsByClassName("groupPreview")[0].children[1].innerHTML = document.getElementById("newgroupname").value;
+        }
+
+        let members = document.getElementsByClassName("newgroupmemberlist")[0].children;
+        for(let i=0; i<members.length; i++) {
+            members[i].addEventListener("mouseover", function() {
+               members[i].style.backgroundColor = "#e3e3e3";
+            });
+            members[i].addEventListener("mouseleave", function() {
+                if(!members[i].children[0].checked)
+                    members[i].style.backgroundColor = "white";
+            });
+        }
+        function updateMemberView() {
+            let members = document.getElementsByClassName("newgroupmemberlist")[0].children;
+            let cnt = 0;
+            for(let i=0; i<members.length; i++) {
+                let inpBox = members[i].children[0];
+                // console.log(inpBox);
+                if(inpBox.checked) {
+                    cnt++;
+                    members[i].style.backgroundColor = "#e5e5e5";
+                }else{
+                    members[i].style.backgroundColor = "white";
+                }
+            }
+            document.getElementById("countmember").innerHTML = `Add Members(${cnt} added.)`;
+            document.getElementsByClassName("groupPreview")[0].children[0].children[2].innerHTML = `${cnt} Participants`;
+
+        }
+        function newGroup() {
+
+        }
+
+    </script>
+
+</body>
+</html>

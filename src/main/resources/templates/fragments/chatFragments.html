@@ -1,0 +1,38 @@
+<div th:fragment="chatGroup">
+  <div style="display: flex; flex-direction: row; border-radius: 16px; justify-content: space-between; padding: 12px" class="clickableGroup">
+    <div class="groupBody">
+      <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
+          th:text="${initials}"></div>
+      <div style="display: flex; flex-direction: column">
+        <div th:text="${group_name}"></div>
+        <div style="font-size: small" th:text="${last_msg}"></div>
+      </div>
+    </div>
+    <div style="height: 20px; min-width: 20px; color: white; font-size: small; padding-inline: 6px; background-color: #00c73e; border-radius: 10px; display: flex; justify-content: center; align-items: center;"
+         th:text="${count}"></div>
+  </div>
+</div>
+
+<div th:fragment="chatElement">
+  <div style="display: flex; flex-direction: row; justify-content: space-between; padding: 12px">
+  <div class="groupBody">
+    <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
+         th:text="${initials}"></div>
+    <div style="display: flex; flex-direction: column;">
+      <div th:text="${sender}"></div>
+      <div style="font-size: small" th:text="${msg}"></div>
+    </div>
+  </div>
+    <div th:text="${time}"></div>
+  </div>
+</div>
+
+<div th:fragment="Contact">
+    <div class="groupBody">
+      <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
+           th:text="${initials}"></div>
+      <div style="display: flex; flex-direction: column;">
+        <div th:text="${sender}"></div>
+      </div>
+  </div>
+</div>

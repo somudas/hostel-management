@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    height: 100%;
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -10,6 +11,7 @@ body {
     flex-direction: row;
     justify-content: space-between;
     padding: 10px;
+    height: 5vh;
     padding-inline: 200px;
     align-items: center;
 }
@@ -64,6 +66,7 @@ body {
     gap: 6px;
 }
 input{
+    font-family: Montserrat, sans-serif;
     border-radius: 10px;
     width: 100%;
     padding: 12px;
@@ -104,3 +107,176 @@ select {
     margin-block: 8px;
     border-radius: 8px;
 }
+.chatContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /*align-items: center;*/
+}
+.chatLeft {
+    /*flex: 1 1 auto;*/
+    width: 25%;
+    height: 89vh;
+    padding-block: 10px;
+}
+.chatLeft >button {
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    transform: translate(-140%, -25%);
+    height: 50px;
+    width: 50px;
+    font-size: x-large;
+    border-radius: 50%;
+    /*margin: 12px;*/
+    background-color: royalblue;
+    color: white;
+    border: none;
+    transition-duration: 0.4s;
+    /*box-shadow: 0 0 10px grey;*/
+}
+.groupBody {
+    display: flex;
+    flex-direction: row;
+    /*justify-content: space-between;*/
+    gap: 10px;
+    border-radius: 16px;
+    /*padding: 10px;*/
+}
+button:hover {
+    cursor: pointer;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+.clickableGroup:hover {
+    cursor: pointer;
+    background-color: #cccccc;
+}
+.chatMiddle {
+    width: 50%;
+    display: flex;
+    flex-flow: column;
+    height: 89vh;
+}
+
+.chatList {
+    overflow-y: scroll;
+    height: 75vh;
+}
+
+.chatHeader {
+    background-color: white;
+    /*border-radius: 12px;*/
+    padding: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    box-shadow: 0 8px 8px #e3e3e3;
+    color: black;
+}
+
+.chatBox {
+
+    display: flex;
+    flex-direction: row;
+}
+
+.chatInput {
+    display: flex;
+    padding: 4px;
+    flex-direction: row;
+    /*width: 70%;*/
+    justify-content: space-between;
+}
+
+.chatInput > button {
+    background-color: royalblue;
+    border: none;
+    color: white;
+    height: 40px;
+    width: 40px;
+    font-size: x-large;
+    border-radius: 50%;
+}
+
+.chatRight {
+    width: 25%;
+    height: 100%;
+}
+.chatHeader > div > button {
+    height: 35px;
+    width: 35px;
+    font-size: large;
+    border-radius: 50%;
+    /*margin: 12px;*/
+    background-color: royalblue;
+    color: white;
+    border: none;
+    transition-duration: 0.4s;
+}
+
+.grouplist {
+    overflow-y: scroll;
+    margin-top: 8vh;
+    height: 80vh;
+    padding-inline: 4px;
+}
+.modal {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modalBody {
+    background-color: white;
+    width: 50%;
+    height: 50%;
+    border-radius: 20px;
+    padding: 18px;
+    box-shadow: 0 0 10px grey;
+}
+
+.newgroupmemberlist {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 50%;
+    height: 20vh;
+    overflow-y: scroll;
+}
+.newgroupmemberlist > div {
+    padding: 4px;
+    border-radius: 6px;
+}
+.groupPreview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    width: 20%;
+    gap: 12px;
+}
+#createGroupSubmit {
+    background-color: royalblue;
+    border-radius: 20px;
+    color: white;
+    border: none;
+    padding: 8px;
+    padding-inline: 34px;
+
+}
+
+/*.newgroupmemberlist > div > input {*/
+/*    visibility: hidden;*/
+/*}*/
+/*.newgroupmemberlist > div:hover {*/
+/*    background-color: #e3e3e3;*/
+/*    border-radius: 6px;*/
+/*}*/

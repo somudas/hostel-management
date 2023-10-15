@@ -52,7 +52,7 @@ public class WebConfig {
                 .authorizeHttpRequests(
                 (authz) -> authz
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
-                        .requestMatchers("/assets/**", "/index..html", "/", "/logout", "/login", "/register").permitAll()
+                        .requestMatchers("/assets/**", "/chats", "/index..html", "/", "/logout", "/login", "/register").permitAll()
                         .requestMatchers("/student").hasAuthority("student")
                         .anyRequest().denyAll()
         ).formLogin((formlogin) ->  formlogin.loginPage("/login").permitAll())
