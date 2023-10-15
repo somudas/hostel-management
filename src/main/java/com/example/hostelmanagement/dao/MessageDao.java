@@ -1,6 +1,7 @@
 package com.example.hostelmanagement.dao;
 
 import com.example.hostelmanagement.model.Complaint;
+import com.example.hostelmanagement.model.Member;
 import com.example.hostelmanagement.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -16,9 +17,10 @@ import java.sql.Statement;
 @Repository
 public class MessageDao {
     private final JdbcTemplate jdbcTemplate;
+    private final MemberDao memberDao;
     @Autowired
-    public MessageDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public MessageDao(JdbcTemplate jdbcTemplate, MemberDao memberDao) {
+        this.jdbcTemplate = jdbcTemplate;this.memberDao=memberDao;
     }
 
     public Message addMessage(Message msg) {
@@ -37,11 +39,22 @@ public class MessageDao {
 
         Integer generatedKey=keyHolder.getKey().intValue();
         final String sql1 = String.format("select * from MESSAGES where msgId=%d", generatedKey);
-        return jdbcTemplate.queryForObject(sql1,new BeanPropertyRowMapper<>(Message.class));
+        Message addedMessage=jdbcTemplate.queryForObject(sql1,new BeanPropertyRowMapper<>(Message.class));
+        Member sentByUser=memberDao.getMember(addedMessage.getMid(), addedMessage.getRole());
+        addedMessage.setFirstname(sentByUser.getFirstname());
+        addedMessage.setLastname(sentByUser.getLastname());
+        return addedMessage;
     }
 
     public List<Message> getAllMessagesOfAGroup(Integer grpId) {
         final String sql = String.format("SELECT * from MESSAGES where grpId=%d order by sentAt",grpId);
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Message.class));
+        List<Message> messages=jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Message.class));
+        for(Message message: messages)
+        {
+            Member sentByUser=memberDao.getMember(message.getMid(), message.getRole());
+            message.setFirstname(sentByUser.getFirstname());
+            message.setLastname(sentByUser.getLastname());
+        }
+        return messages;
     }
 }
