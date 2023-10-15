@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -46,6 +47,15 @@ public class MessageController {
         User currentUser= memberService.findUser(principal.getName());
         grp.setAdminId(currentUser.getMid());
         grp.setAdminRole(currentUser.getRole());
+
+        List<Member> memberList = new ArrayList<Member>(grp.getMembers());
+
+        Member currentMember=new Member();
+        currentMember.setRole(currentUser.getRole());
+        currentMember.setMid(currentUser.getMid());
+        memberList.add(currentMember);
+
+        grp.setMembers(memberList);
         return messageService.createGroup(grp);
     }
     @GetMapping("/api/get/groups")

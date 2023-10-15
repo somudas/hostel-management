@@ -36,7 +36,6 @@ public class MessageDao {
         }, keyHolder);
 
         Integer generatedKey=keyHolder.getKey().intValue();
-        System.out.println(generatedKey);
         final String sql1 = String.format("select * from MESSAGES where msgId=%d", generatedKey);
         return jdbcTemplate.queryForObject(sql1,new BeanPropertyRowMapper<>(Message.class));
     }

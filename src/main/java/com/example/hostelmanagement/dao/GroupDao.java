@@ -6,8 +6,12 @@ import com.example.hostelmanagement.model.MessageGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -20,15 +24,32 @@ public class GroupDao {
 
     public int addGroup(MessageGroup grp) {
         final String sql = "INSERT INTO MESSAGE_GROUP(name, description, adminId, adminRole) values(?,?,?,?)";
-//        System.out.println(member.getEmail() + " "+ member.getFirstName() + " " + member.getLastName());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection
+                    .prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, grp.getName());
+            ps.setString(2, grp.getDescription());
+            ps.setInt(3, grp.getAdminId());
+            ps.setString(4, grp.getAdminRole());
+            return ps;
+        }, keyHolder);
+
+        return keyHolder.getKey().intValue();
+    }
+
+
+    public int addGroupMember(Integer grpId, Member member) {
+        final String sql = "INSERT INTO GROUP_MEMBERSHIP(grpId, memberId, memberRole) values(?,?,?)";
         int res = jdbcTemplate.update(sql,
-                grp.getName(),
-                grp.getDescription(),
-                grp.getAdminId(),
-                grp.getAdminRole()
+                grpId,
+                member.getMid(),
+                member.getRole()
         );
         return res;
     }
+
     public List<MessageGroup> getAllGroups() {
         final String sql = "SELECT * from MESSAGE_GROUP";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(MessageGroup.class));
