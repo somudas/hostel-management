@@ -47,7 +47,7 @@ public class MemberDao {
     }
 
     public Member getMember(Integer mid, String role) {
-        final String sql = String.format("SELECT grpId from MEMBERS where memberId=%d and memberRole='%s'", mid, role);
+        final String sql = String.format("SELECT * from MEMBERS where mid=%d and role='%s'", mid, role);
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Member.class));
     }
 }

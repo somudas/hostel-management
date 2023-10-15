@@ -62,11 +62,11 @@
                                  th:text="${group.name[0]}"></div>
                             <div style="display: flex; flex-direction: column">
                                 <div th:text="${group.name}"></div>
-                                <div style="font-size: small" th:text="asd"></div>
+                                <div style="font-size: small" class="lastMsg" th:groupId="${group.grpId}" th:if="${#lists.size(group.messages)}" th:text="${group.messages[#lists.size(group.messages)-1].firstname + ' : ' + group.messages[#lists.size(group.messages)-1].content}"></div>
                             </div>
                         </div>
                         <div style="height: 20px; min-width: 20px; color: white; font-size: small; padding-inline: 6px; background-color: #00c73e; border-radius: 10px; display: flex; justify-content: center; align-items: center;"
-                             th:text="123"></div>
+                             th:groupId="${group.grpId}" class="unseenMsg" th:text="0"></div>
                     </div>
                 </div>
 
@@ -82,16 +82,13 @@
                             <div th:text="${group.name}">
                             </div>
                         </div>
-                        <div>
-                            <button>+</button>
-                        </div>
                     </div>
-                    <div class="chatList">
+                    <div class="chatList" th:groupId="${group.grpId}">
                         <div th:each="message: ${group.messages}">
                             <div style="display: flex; flex-direction: row; justify-content: space-between; padding: 12px">
                                 <div class="groupBody">
                                     <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
-                                         th:text="${message.firstname[0] + message.lastname[1]}"></div>
+                                         th:text="${message.firstname[0] + message.lastname[0]}"></div>
                                     <div style="display: flex; flex-direction: column;">
                                         <div th:text="${message.firstname + ' ' + message.lastname}"></div>
                                         <div style="font-size: small" th:text="${message.content}"></div>
@@ -137,6 +134,7 @@
     </div>
 
     <script type="text/javascript">
+
         const stompClient = new StompJs.Client({
             brokerURL: 'ws://localhost:8080/establish-socket-connection'
         });
@@ -147,9 +145,62 @@
                 body: JSON.stringify({'content': content})
             });
         }
+
         function msgReceive(grpId) {
             stompClient.subscribe(`/socket/message/receive/${grpId}`, (message) => {
                 console.log(JSON.parse(message.body));
+                message = JSON.parse(message.body);
+                let dd = document.createElement("div");
+                dd.innerHTML = `
+                    <div style="display: flex; flex-direction: row; justify-content: space-between; padding: 12px">
+                        <div class="groupBody">
+                            <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
+                                >${message['firstname'][0]}${message['lastname'][0]}</div>
+                            <div style="display: flex; flex-direction: column;">
+                                <div>${message['firstname']} ${message['lastname']}</div>
+                                <div style="font-size: small">${message['content']}</div>
+                            </div>
+                        </div>
+                        <div>${message['sentAt']}</div>
+                    </div>
+                `;
+
+                let divs = document.getElementsByClassName("chatList");
+                for(let i = 0;i<divs.length;i++) {
+                    if(divs[i].getAttribute("groupId") == grpId) {
+                        divs[i].appendChild(dd);
+                        break;
+                    }
+                }
+                let middleChildren = document.getElementsByClassName("chatMiddle")[0].children;
+                let left = document.getElementsByClassName("lastMsg");
+                let unseen = document.getElementsByClassName("unseenMsg");
+                for(let i=0;i<middleChildren.length;i++) {
+                    let inpDiv = middleChildren[i].children[0].children[2];
+                    let block = middleChildren[i].children[0];
+                    // console.log(inpDiv);
+                    let idx = inpDiv.getAttribute("groupId");
+                    if(idx == grpId) {
+                        // console.log(grpId, inpDiv);
+                        if(block.style.display === 'none') {
+                            console.log("this is unseen!");
+                            for(let i=0;i<unseen.length;i++) {
+                                if(unseen[i].getAttribute("groupId") == grpId) {
+                                    console.log("sdfsdf")
+                                    unseen[i].innerHTML = parseInt(unseen[i].innerHTML)+1;
+                                }
+                            }
+                        }
+                        inpDiv.children[0].children[0].value = "";
+                        break;
+                    }
+                }
+
+                for(let i=0;i<left.length;i++) {
+                    if(left[i].getAttribute("groupId") == grpId) {
+                        left[i].innerHTML =  message['firstname'] + " : " + message['content'];
+                    }
+                }
             });
         }
         stompClient.onConnect = (f) => {
@@ -166,11 +217,22 @@
         let middleChildren = document.getElementsByClassName("chatMiddle")[0].children;
         for(let i=0;i<middleChildren.length;i++) {
             let inpDiv = middleChildren[i].children[0].children[2];
+
             // console.log(inpDiv);
             let grpId = inpDiv.getAttribute("groupId");
-            console.log(inpDiv.children[1], inpDiv.children[0].children[0].value)
+            // console.log(inpDiv.children[1], inpDiv.children[0].children[0].value)
+            inpDiv.children[0].children[0].addEventListener('keyup', (event) => {
+                if(event.keyCode == 13) {
+                    console.log("enter key pressed!");
+                    let msg = inpDiv.children[0].children[0].value;
+                    if(msg.length == 0) return;
+                    foo(grpId, msg);
+                }
+            })
             inpDiv.children[1].addEventListener('click', (e) => {
-               foo(grpId, inpDiv.children[0].children[0].value);
+                let msg = inpDiv.children[0].children[0].value;
+                if(msg.length == 0) return;
+                foo(grpId, msg);
             });
         }
 
@@ -184,6 +246,13 @@
                 for (let j=0;j<par.length;j++) {
                     if(par[j].children[0].getAttribute("groupId") == idx) {
                         par[j].children[0].style.display = "block";
+                        let unseen = document.getElementsByClassName("unseenMsg");
+                        for(let i=0;i<unseen.length;i++) {
+                            if(unseen[i].getAttribute("groupId") == grpId) {
+                                unseen[i].innerHTML = 0;
+                            }
+                        }
+
                     }else{
                         par[j].children[0].style.display = "none";
                     }
