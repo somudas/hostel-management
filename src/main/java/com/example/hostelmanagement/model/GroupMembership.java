@@ -1,19 +1,20 @@
 package com.example.hostelmanagement.model;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @Data
 @Getter
-public class User {
+public class GroupMembership{
+
     @NotNull
-    private String username;
+    private Integer id;
     @NotNull
-    private String password;
+    private Integer grpId;
     @NotNull
-    private String role;
+    private Integer memberId;
     @NotNull
-    private Integer mid;
+    private String memberRole;
 }

@@ -30,7 +30,7 @@ public class MemberService {
     public int changeRole(User user, String newRole) {
         return userDao.changeRole(user, newRole);
     }
-    public boolean findUser(String username) {
+    public User findUser(String username) {
         return userDao.findByUsername(username);
     }
     public List<Member> viewAll() {

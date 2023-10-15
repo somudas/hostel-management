@@ -43,7 +43,7 @@ public class Member {
     private java.sql.Date dateofbirth;
 
     @Getter
-    @NotBlank
+    @NotNull
     @Email
     @Size(max=100)
     private String email;
