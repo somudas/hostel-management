@@ -65,7 +65,6 @@ public class MessageController {
         User currentUser= memberService.findUser(principal.getName());
         List<MessageGroup> msgGrps = messageService.getAllGroups(currentUser.getMid(), currentUser.getRole());
         List<Member> members = memberService.viewAll();
-
         members.removeIf(mem -> mem.getMid().equals(currentUser.getMid()) && mem.getRole().equals(currentUser.getRole()));
         model.addAttribute("messageGroups", msgGrps);
         model.addAttribute("allMembers", members);

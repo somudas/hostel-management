@@ -55,9 +55,7 @@ public class GroupDao {
     }
 
     public List<Member> getAllMembers(Integer grpId) {
-        final String sql = String.format("select * from members" +
-                "    where (mid, role) in (select memberId, memberRole from GROUP_MEMBERSHIP" +
-                "    where grpId = %d);", grpId);
+        final String sql = String.format("select * from MEMBERS where (mid, role) in (select memberId, memberRole from GROUP_MEMBERSHIP where grpId = %d)", grpId);
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Member.class));
     }
 }

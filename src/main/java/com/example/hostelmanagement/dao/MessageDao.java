@@ -40,7 +40,7 @@ public class MessageDao {
         Integer generatedKey=keyHolder.getKey().intValue();
         final String sql1 = String.format("select * from MESSAGES where msgId=%d", generatedKey);
         Message addedMessage=jdbcTemplate.queryForObject(sql1,new BeanPropertyRowMapper<>(Message.class));
-        Member sentByUser=memberDao.getMember(addedMessage.getMid(), addedMessage.getRole());
+        Member sentByUser=memberDao.getMember(addedMessage.getSentById(), addedMessage.getSentByRole());
         addedMessage.setFirstname(sentByUser.getFirstname());
         addedMessage.setLastname(sentByUser.getLastname());
         return addedMessage;
@@ -51,7 +51,7 @@ public class MessageDao {
         List<Message> messages=jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Message.class));
         for(Message message: messages)
         {
-            Member sentByUser=memberDao.getMember(message.getMid(), message.getRole());
+            Member sentByUser=memberDao.getMember(message.getSentById(), message.getSentByRole());
             message.setFirstname(sentByUser.getFirstname());
             message.setLastname(sentByUser.getLastname());
         }
