@@ -69,7 +69,8 @@ public class HomeController {
         user.setUsername(username);
         user.setPassword(password);
         user.setRole(member.getRole());
-        if (memberService.findUser(username)) {
+        user.setMid(member.getMid());
+        if (memberService.findUser(username)!=null) {
             httpServletResponse.sendRedirect("/register?error&msg=user%20already%20exists");
             return;
         }
@@ -82,7 +83,7 @@ public class HomeController {
     // REMOVE
     @GetMapping("/student")
     @ResponseBody
-    public String stud() {
-        return "<h1>sensititve info</h1>";
+    public String stud(Principal principal) {
+        System.out.println(principal.getName());return "<h1>sensititve info</h1>";
     }
 }

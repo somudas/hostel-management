@@ -1,6 +1,7 @@
 package com.example.hostelmanagement.dao;
 
 import com.example.hostelmanagement.model.Member;
+import com.example.hostelmanagement.model.MessageGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,6 +37,12 @@ public class MemberDao {
     }
     public List<Member> viewAll() {
         final String sql = "SELECT * from MEMBERS";
+        int x = 4;
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Member.class));
+    }
+
+    public List<Integer> getAllGroups(Integer mid, String role) {
+        final String sql = String.format("SELECT grpId from GROUP_MEMBERSHIP where memberId=%d and memberRole='%s'", mid, role);
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Integer.class));
     }
 }

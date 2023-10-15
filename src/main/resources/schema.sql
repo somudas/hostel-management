@@ -1,3 +1,4 @@
+
 CREATE TABLE IF NOT EXISTS MEMBERS(
     MID         INT(8)  NOT NULL,
     ROLE        ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN') NOT NULL,
@@ -24,10 +25,14 @@ CREATE TABLE IF NOT EXISTS COMPLAINTS(
 );
 
 create table users(
-  username      varchar(50) not null primary key,
-  password      varchar(500) not null,
-  enabled       boolean not null
+                      username      varchar(50) not null primary key,
+                      password      varchar(500) not null,
+                      enabled       boolean not null,
+                       mid  int  not null,
+                      role  ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN') NOT NULL,
+                        FOREIGN KEY (mid, role) REFERENCES MEMBERS(MID, ROLE)
 );
+
 
 create table authorities (
  username       varchar(50) not null,
@@ -36,6 +41,46 @@ create table authorities (
 );
 
 create unique index ix_auth_username on authorities (username,authority);
+
+
+CREATE TABLE IF NOT EXISTS MESSAGE_GROUP(
+                                       grpId         int AUTO_INCREMENT primary key,
+                                       name       VARCHAR(50) NOT NULL,
+                                       description       VARCHAR(250) NOT NULL,
+                                       adminId    INT(8) NOT NULL,
+                                       adminRole  ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN') NOT NULL,
+                                       FOREIGN KEY (adminId, adminRole) REFERENCES MEMBERS(MID, ROLE)
+);
+
+CREATE TABLE IF NOT EXISTS MESSAGES(
+                                         msgId         int AUTO_INCREMENT primary key,
+                                         grpId         int NOT NULL,
+                                         content       VARCHAR(250) NOT NULL,
+                                         sentById    INT(8) NOT NULL,
+                                         sentByRole  ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN') NOT NULL,
+                                         sentAt      datetime default current_timestamp not null,
+                                         FOREIGN KEY (sentById, sentByRole) REFERENCES MEMBERS(MID, ROLE),
+                                        FOREIGN KEY (grpId) REFERENCES MESSAGE_GROUP(grpId)
+
+);
+
+CREATE TABLE IF NOT EXISTS GROUP_MEMBERSHIP(
+    id int AUTO_INCREMENT primary key,
+    grpId int NOT NULL,
+    memberId    INT(8) NOT NULL,
+    memberRole  ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN') NOT NULL,
+
+    FOREIGN KEY (memberId, memberRole) REFERENCES MEMBERS(MID, ROLE),
+    FOREIGN KEY (grpId) REFERENCES MESSAGE_GROUP(grpId)
+);
+
+
+
+-- group details (groupName, groupDesc, groupAdmin)
+select * from MESSAGE_GROUP
+where grpId in (select grpId from GROUP_MEMBERSHIP where memberId = userId and memberRole = userRole);
+
+-- group messages
 
 
 
