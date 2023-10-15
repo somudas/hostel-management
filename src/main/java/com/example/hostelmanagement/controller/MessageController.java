@@ -1,5 +1,6 @@
 package com.example.hostelmanagement.controller;
 
+import com.example.hostelmanagement.dao.MemberDao;
 import com.example.hostelmanagement.dao.UserDao;
 import com.example.hostelmanagement.model.*;
 import com.example.hostelmanagement.service.MemberService;
@@ -24,11 +25,12 @@ public class MessageController {
 
     private final MessageService messageService;
     private final MemberService memberService;
-
+    private final MemberDao memberDao;
     @Autowired
-    public MessageController(MessageService messageService, MemberService memberService) {
+    public MessageController(MessageService messageService, MemberService memberService, MemberDao memberDao) {
         this.messageService = messageService;
         this.memberService= memberService;
+        this.memberDao = memberDao;
     }
 
     @MessageMapping("/send/{grpId}")
@@ -69,5 +71,11 @@ public class MessageController {
         model.addAttribute("allMembers", members);
         return "chat";
     }
+    @GetMapping("/api/groups")
+    @ResponseBody
+    public List<Integer> getAllGroupIds(Principal principal, Model model){
+        User currentUser= memberService.findUser(principal.getName());
+        return memberDao.getAllGroups(currentUser.getMid(), currentUser.getRole());
 
+    }
 }

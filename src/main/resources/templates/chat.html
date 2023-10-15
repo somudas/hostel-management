@@ -5,6 +5,7 @@
     <title>Chat</title>
 </head>
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
 
 <body>
     <div class="modal">
@@ -90,9 +91,9 @@
                             <div style="display: flex; flex-direction: row; justify-content: space-between; padding: 12px">
                                 <div class="groupBody">
                                     <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
-                                         th:text="${message.sentByRole[0]}"></div>
+                                         th:text="${message.firstname[0] + message.lastname[1]}"></div>
                                     <div style="display: flex; flex-direction: column;">
-                                        <div th:text="${message.sentById}"></div>
+                                        <div th:text="${message.firstname + ' ' + message.lastname}"></div>
                                         <div style="font-size: small" th:text="${message.content}"></div>
                                     </div>
                                 </div>
@@ -100,10 +101,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="chatInput">
-                        <label style="width: 90%" for="message_${group.grpId}">
-                        <input placeholder="Type a message" style="font-family: Montserrat, sans-serif;background-color: white;" type="text" name="message" id="message_${group.grpId}"></label>
-                        <button type="submit">→</button>
+                    <div class="chatInput" th:groupId="${group.grpId}">
+                        <label style="width: 90%" th:for="${'message' + group.grpId}">
+                        <input placeholder="Type a message" style="font-family: Montserrat, sans-serif;background-color: white;" type="text" name="message" th:id="${'message'+group.grpId}"></label>
+                        <button>→</button>
                     </div>
                 </div>
             </div>
@@ -136,6 +137,43 @@
     </div>
 
     <script type="text/javascript">
+        const stompClient = new StompJs.Client({
+            brokerURL: 'ws://localhost:8080/establish-socket-connection'
+        });
+
+        function foo(idx, content) {
+            stompClient.publish({
+                destination: `/socket/message/send/${idx}`,
+                body: JSON.stringify({'content': content})
+            });
+        }
+        function msgReceive(grpId) {
+            stompClient.subscribe(`/socket/message/receive/${grpId}`, (message) => {
+                console.log(JSON.parse(message.body));
+            });
+        }
+        stompClient.onConnect = (f) => {
+            console.log("connected!!!");
+            fetch("/api/groups").then((e) => {
+                e.json().then(grpList => {
+                    grpList.forEach(grp => msgReceive(grp.toString()));
+                });
+            });
+        }
+
+        stompClient.activate();
+        // middle
+        let middleChildren = document.getElementsByClassName("chatMiddle")[0].children;
+        for(let i=0;i<middleChildren.length;i++) {
+            let inpDiv = middleChildren[i].children[0].children[2];
+            // console.log(inpDiv);
+            let grpId = inpDiv.getAttribute("groupId");
+            console.log(inpDiv.children[1], inpDiv.children[0].children[0].value)
+            inpDiv.children[1].addEventListener('click', (e) => {
+               foo(grpId, inpDiv.children[0].children[0].value);
+            });
+        }
+
 
         let leftList = document.getElementsByClassName("grouplist")[0].children;
         for (let i=0;i<leftList.length;i++) {
