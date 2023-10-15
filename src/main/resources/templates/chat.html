@@ -248,7 +248,7 @@
                         par[j].children[0].style.display = "block";
                         let unseen = document.getElementsByClassName("unseenMsg");
                         for(let i=0;i<unseen.length;i++) {
-                            if(unseen[i].getAttribute("groupId") == grpId) {
+                            if(unseen[i].getAttribute("groupId") == idx) {
                                 unseen[i].innerHTML = 0;
                             }
                         }
@@ -259,7 +259,9 @@
                 }
                 par = document.getElementsByClassName("chatRight")[0].children;
                 for (let j=0;j<par.length;j++) {
+                    console.log(par[j].children[0])
                     if(par[j].children[0].getAttribute("groupId") == idx) {
+                        console.log("sdfsf")
                         par[j].children[0].style.display = "block";
                     }else{
                         par[j].children[0].style.display = "none";
