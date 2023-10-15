@@ -23,8 +23,6 @@ public class MessageService {
         this.memberDao = memberDao;
     }
     public Message addMessage(Message msg){return messageDao.addMessage(msg);}
-    public List<Message> getAllMessages(int grpId){return messageDao.getAllMessagesOfAGroup(grpId);}
-
 
     public int createGroup(MessageGroup grp){
         Integer grpId=groupDao.addGroup(grp);

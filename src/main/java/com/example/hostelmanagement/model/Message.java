@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Data
 @Getter
-public class Message {
+public class Message extends Member{
 
     private Integer msgId;
     private Integer grpId;
@@ -16,4 +16,5 @@ public class Message {
     private Integer sentById;
     private String sentByRole;
     private java.sql.Timestamp sentAt;
+
 }
