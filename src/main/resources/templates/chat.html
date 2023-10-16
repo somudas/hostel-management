@@ -169,6 +169,8 @@
                 for(let i = 0;i<divs.length;i++) {
                     if(divs[i].getAttribute("groupId") == grpId) {
                         divs[i].appendChild(dd);
+                        console.log(divs[i]);
+                        divs[i].scrollTop = divs[i].scrollHeight;
                         break;
                     }
                 }
@@ -181,6 +183,7 @@
                     // console.log(inpDiv);
                     let idx = inpDiv.getAttribute("groupId");
                     if(idx == grpId) {
+
                         // console.log(grpId, inpDiv);
                         if(block.style.display === 'none') {
                             console.log("this is unseen!");
@@ -201,6 +204,7 @@
                         left[i].innerHTML =  message['firstname'] + " : " + message['content'];
                     }
                 }
+
             });
         }
         stompClient.onConnect = (f) => {
@@ -213,6 +217,19 @@
         }
 
         stompClient.activate();
+        function scrollBottom(grpId) {
+            console.log("sdfsdfsdfsdf");
+            let par = document.getElementsByClassName("chatMiddle")[0].children;
+            for(let i=0;i<par.length;i++) {
+                if(par[i].children[0].getAttribute("groupId") === grpId){
+                    let list = par[i].children[0].children[1];
+                    console.log(list);
+                    list.scrollTop = list.scrollHeight;
+                }
+
+            }
+
+        }
         // middle
         let middleChildren = document.getElementsByClassName("chatMiddle")[0].children;
         for(let i=0;i<middleChildren.length;i++) {
@@ -227,12 +244,14 @@
                     let msg = inpDiv.children[0].children[0].value;
                     if(msg.length == 0) return;
                     foo(grpId, msg);
+                    scrollBottom(grpId);
                 }
             })
             inpDiv.children[1].addEventListener('click', (e) => {
                 let msg = inpDiv.children[0].children[0].value;
                 if(msg.length == 0) return;
                 foo(grpId, msg);
+                scrollBottom(grpId);
             });
         }
 
@@ -243,9 +262,15 @@
             let idx = x.getAttribute("groupId");
             x.addEventListener("click", (e) => {
                 let par = document.getElementsByClassName("chatMiddle")[0].children;
+
                 for (let j=0;j<par.length;j++) {
-                    if(par[j].children[0].getAttribute("groupId") == idx) {
+                    // console.log("im here");
+                    if(par[j].children[0].getAttribute("groupId") === idx) {
                         par[j].children[0].style.display = "block";
+                        let list = par[j].children[0].children[1];
+                        console.log(list);
+                        list.scrollTop = list.scrollHeight;
+
                         let unseen = document.getElementsByClassName("unseenMsg");
                         for(let i=0;i<unseen.length;i++) {
                             if(unseen[i].getAttribute("groupId") == idx) {
@@ -259,7 +284,7 @@
                 }
                 par = document.getElementsByClassName("chatRight")[0].children;
                 for (let j=0;j<par.length;j++) {
-                    console.log(par[j].children[0])
+                    // console.log(par[j].children[0])
                     if(par[j].children[0].getAttribute("groupId") == idx) {
                         console.log("sdfsf")
                         par[j].children[0].style.display = "block";
