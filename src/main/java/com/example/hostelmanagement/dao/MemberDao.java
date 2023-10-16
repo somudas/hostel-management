@@ -41,9 +41,9 @@ public class MemberDao {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Member.class));
     }
 
-    public List<Integer> getAllGroups(Integer mid, String role) {
-        final String sql = String.format("SELECT grpId from GROUP_MEMBERSHIP where memberId=%d and memberRole='%s'", mid, role);
-        return jdbcTemplate.queryForList(sql, Integer.class);
+    public List<MessageGroup> getAllGroups(Integer mid, String role) {
+        final String sql = String.format("SELECT grpId,unreadCnt from GROUP_MEMBERSHIP where memberId=%d and memberRole='%s'", mid, role);
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(MessageGroup.class));
     }
 
     public Member getMember(Integer mid, String role) {

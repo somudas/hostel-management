@@ -58,4 +58,10 @@ public class GroupDao {
         final String sql = String.format("select * from MEMBERS where (mid, role) in (select memberId, memberRole from GROUP_MEMBERSHIP where grpId = %d)", grpId);
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Member.class));
     }
+
+    public void updateUnreadCnt(Integer grpId)
+    {
+        final String sql = String.format("UPDATE GROUP_MEMBERSHIP SET unreadCnt=unreadCnt+1 where grpId=%d",grpId);
+        jdbcTemplate.update(sql);
+    }
 }

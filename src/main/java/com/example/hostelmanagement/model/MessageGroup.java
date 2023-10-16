@@ -22,4 +22,6 @@ public class MessageGroup {
 
     private List<Message> messages;
     private List<Member> members;
+
+    private Integer unreadCnt;
 }

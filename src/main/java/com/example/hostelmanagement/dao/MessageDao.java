@@ -59,4 +59,10 @@ public class MessageDao {
         }
         return messages;
     }
+
+    public Integer updateUnreadCnt(Integer grpId, Integer mid, String role)
+    {
+        final String sql = String.format("UPDATE GROUP_MEMBERSHIP SET unreadCnt=0 where grpId=%d and memberId=%d and memberRole='%s'",grpId,mid,role);
+        return jdbcTemplate.update(sql);
+    }
 }

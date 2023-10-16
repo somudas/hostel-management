@@ -22,7 +22,11 @@ public class MessageService {
         this.groupDao = groupDao;
         this.memberDao = memberDao;
     }
-    public Message addMessage(Message msg){return messageDao.addMessage(msg);}
+    public Message addMessage(Message msg){
+        Message addedMessage=messageDao.addMessage(msg);
+        groupDao.updateUnreadCnt(addedMessage.getGrpId());
+        return addedMessage;
+    }
 
     public int createGroup(MessageGroup grp){
         Integer grpId=groupDao.addGroup(grp);
@@ -33,11 +37,12 @@ public class MessageService {
 
     public List<MessageGroup> getAllGroups(Integer mid, String role){
         List<MessageGroup> messageGroupList = new ArrayList<MessageGroup>();
-        List<Integer> messageGroupIds = memberDao.getAllGroups(mid, role);
-        for (Integer grpId : messageGroupIds) {
-            MessageGroup msgGrp = groupDao.getGroupById(grpId);
-            msgGrp.setMessages(messageDao.getAllMessagesOfAGroup(grpId));
-            msgGrp.setMembers(groupDao.getAllMembers(grpId));
+        List<MessageGroup> messageGroups = memberDao.getAllGroups(mid, role);
+        for (MessageGroup grp : messageGroups) {
+            MessageGroup msgGrp = groupDao.getGroupById(grp.getGrpId());
+            msgGrp.setMessages(messageDao.getAllMessagesOfAGroup(grp.getGrpId()));
+            msgGrp.setMembers(groupDao.getAllMembers(grp.getGrpId()));
+            msgGrp.setUnreadCnt(grp.getUnreadCnt());
             messageGroupList.add(msgGrp);
         }
         return messageGroupList;

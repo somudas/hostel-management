@@ -1,6 +1,7 @@
 package com.example.hostelmanagement.controller;
 
 import com.example.hostelmanagement.dao.MemberDao;
+import com.example.hostelmanagement.dao.MessageDao;
 import com.example.hostelmanagement.dao.UserDao;
 import com.example.hostelmanagement.model.*;
 import com.example.hostelmanagement.service.MemberService;
@@ -26,11 +27,13 @@ public class MessageController {
     private final MessageService messageService;
     private final MemberService memberService;
     private final MemberDao memberDao;
+    private final MessageDao messageDao;
     @Autowired
-    public MessageController(MessageService messageService, MemberService memberService, MemberDao memberDao) {
+    public MessageController(MessageService messageService, MemberService memberService, MemberDao memberDao, MessageDao messageDao) {
         this.messageService = messageService;
         this.memberService= memberService;
         this.memberDao = memberDao;
+        this.messageDao =messageDao;
     }
 
     @MessageMapping("/send/{grpId}")
@@ -75,7 +78,17 @@ public class MessageController {
     @ResponseBody
     public List<Integer> getAllGroupIds(Principal principal, Model model){
         User currentUser= memberService.findUser(principal.getName());
-        return memberDao.getAllGroups(currentUser.getMid(), currentUser.getRole());
+        List<MessageGroup> allGroups= memberDao.getAllGroups(currentUser.getMid(), currentUser.getRole());
+        List<Integer> groupIds = new ArrayList<Integer>();
+        for(MessageGroup grp: allGroups)
+            groupIds.add(grp.getGrpId());
+        return groupIds;
+    }
 
+    @GetMapping("/api/update-unread-cnt/{grpId}")
+    @ResponseBody
+    public Integer updateUnreadCnt(Principal principal, @PathVariable Integer grpId){
+        User currentUser= memberService.findUser(principal.getName());
+        return messageDao.updateUnreadCnt(grpId,currentUser.getMid(), currentUser.getRole());
     }
 }
