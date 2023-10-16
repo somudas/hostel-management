@@ -62,7 +62,10 @@
                                  th:text="${group.name[0]}"></div>
                             <div style="display: flex; flex-direction: column">
                                 <div style="font-weight: 500;" th:text="${group.name}"></div>
-                                <div style="font-size: small" class="lastMsg" th:groupId="${group.grpId}" th:if="${#lists.size(group.messages)}" th:text="${group.messages[#lists.size(group.messages)-1].firstname + ' : ' + group.messages[#lists.size(group.messages)-1].content}"></div>
+                                <div style="font-size: small" class="lastMsg" th:groupId="${group.grpId}"
+                                    th:text="${#lists.size(group.messages)} ? ${group.messages[#lists.size(group.messages)-1].firstname+' : '+group.messages[#lists.size(group.messages)-1].content} : ''"
+                                ></div>
+<!--                                <div style="font-size: small" class="lastMsg" th:groupId="${group.grpId}" th:if="${#lists.size(group.messages)}" th:text="${group.messages[#lists.size(group.messages)-1].firstname + ' : ' + group.messages[#lists.size(group.messages)-1].content}"></div>-->
                             </div>
                         </div>
                         <div style="height: 20px; min-width: 20px; color: white; font-size: small; padding-inline: 6px; background-color: #00c73e; border-radius: 10px; display: flex; justify-content: center; align-items: center;"
@@ -215,7 +218,8 @@
                 }
 
                 for(let i=0;i<left.length;i++) {
-                    if(left[i].getAttribute("groupId") == grpId) {
+                    console.log(left[i]);
+                    if(left[i].getAttribute("groupId") === grpId) {
                         left[i].innerHTML =  message['firstname'] + " : " + message['content'];
                     }
                 }

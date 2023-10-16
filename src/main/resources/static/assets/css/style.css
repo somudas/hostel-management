@@ -57,7 +57,7 @@ body {
     font-size: x-large;
 }
 .features > div > div:hover {
-    font-size: xx-larger;
+    font-size: xx-large;
     font-weight: bold;
     cursor: pointer;
 }
