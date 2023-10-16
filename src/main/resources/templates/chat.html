@@ -61,7 +61,7 @@
                             <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
                                  th:text="${group.name[0]}"></div>
                             <div style="display: flex; flex-direction: column">
-                                <div th:text="${group.name}"></div>
+                                <div style="font-weight: 500;" th:text="${group.name}"></div>
                                 <div style="font-size: small" class="lastMsg" th:groupId="${group.grpId}" th:if="${#lists.size(group.messages)}" th:text="${group.messages[#lists.size(group.messages)-1].firstname + ' : ' + group.messages[#lists.size(group.messages)-1].content}"></div>
                             </div>
                         </div>
@@ -90,11 +90,11 @@
                                     <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
                                          th:text="${message.firstname[0] + message.lastname[0]}"></div>
                                     <div style="display: flex; flex-direction: column;">
-                                        <div th:text="${message.firstname + ' ' + message.lastname}"></div>
+                                        <div style="font-weight: 500; font-size: 14px;" th:text="${message.firstname + ' ' + message.lastname}"></div>
                                         <div style="font-size: small" th:text="${message.content}"></div>
                                     </div>
                                 </div>
-                                <div th:text="${message.sentAt}"></div>
+                                <div style="text-align: right; font-size: x-small" th:text="${message.sentAt}"></div>
                             </div>
                         </div>
                     </div>
@@ -134,7 +134,12 @@
     </div>
 
     <script type="text/javascript">
-
+        function getTime(s) {
+            let a = s.split(' ')[0];
+            a = a.split(':')[0]+':'+a.split(':')[1]+' ';
+            let b = s.split(' ')[1];
+            return a+b;
+        }
         const stompClient = new StompJs.Client({
             brokerURL: 'ws://localhost:8080/establish-socket-connection'
         });
@@ -151,17 +156,21 @@
                 console.log(JSON.parse(message.body));
                 message = JSON.parse(message.body);
                 let dd = document.createElement("div");
+                let strDate = message['sentAt'].toString();
+                // console.log(strDate.split['T']);
+                strDate = strDate.split('T')[0] + " " + strDate.split('T')[1];
+                let date = new Date(strDate);
                 dd.innerHTML = `
                     <div style="display: flex; flex-direction: row; justify-content: space-between; padding: 12px">
                         <div class="groupBody">
                             <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
                                 >${message['firstname'][0]}${message['lastname'][0]}</div>
-                            <div style="display: flex; flex-direction: column;">
-                                <div>${message['firstname']} ${message['lastname']}</div>
+                            <div style="display: flex; flex-direction: column; justify-content: space-between">
+                                <div style="font-size: 14px; font-weight: 500">${message['firstname']} ${message['lastname']}</div>
                                 <div style="font-size: small">${message['content']}</div>
                             </div>
                         </div>
-                        <div>${message['sentAt']}</div>
+                        <div style="text-align: right; font-size: x-small">${getTime(date.toLocaleTimeString())}<br>${date.toLocaleDateString()}</div>
                     </div>
                 `;
 
@@ -217,19 +226,9 @@
         }
 
         stompClient.activate();
-        function scrollBottom(grpId) {
-            console.log("sdfsdfsdfsdf");
-            let par = document.getElementsByClassName("chatMiddle")[0].children;
-            for(let i=0;i<par.length;i++) {
-                if(par[i].children[0].getAttribute("groupId") === grpId){
-                    let list = par[i].children[0].children[1];
-                    console.log(list);
-                    list.scrollTop = list.scrollHeight;
-                }
 
-            }
 
-        }
+
         // middle
         let middleChildren = document.getElementsByClassName("chatMiddle")[0].children;
         for(let i=0;i<middleChildren.length;i++) {
@@ -244,14 +243,12 @@
                     let msg = inpDiv.children[0].children[0].value;
                     if(msg.length == 0) return;
                     foo(grpId, msg);
-                    scrollBottom(grpId);
                 }
             })
             inpDiv.children[1].addEventListener('click', (e) => {
                 let msg = inpDiv.children[0].children[0].value;
                 if(msg.length == 0) return;
                 foo(grpId, msg);
-                scrollBottom(grpId);
             });
         }
 
@@ -270,6 +267,21 @@
                         let list = par[j].children[0].children[1];
                         console.log(list);
                         list.scrollTop = list.scrollHeight;
+                        for (let i=0;i<list.children.length;i++) {
+
+                            let dateStr = list.children[i].children[0].children[1].innerHTML;
+                            console.log(dateStr);
+                            dateStr = dateStr.split(' ')[0] + " " + dateStr.split(' ')[1];
+                            console.log(dateStr);
+                            let date = new Date(dateStr);
+                            if(date.toString() !== 'Invalid Date'){
+                                list.children[i].children[0].children[1].innerHTML = `
+                                ${getTime(date.toLocaleTimeString())}<br>${date.toLocaleDateString()}
+                            `;
+                            }
+                        }
+
+
 
                         let unseen = document.getElementsByClassName("unseenMsg");
                         for(let i=0;i<unseen.length;i++) {

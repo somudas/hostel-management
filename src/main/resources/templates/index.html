@@ -10,10 +10,52 @@
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
 <body>
     <div th:replace="~{fragments/headers :: header}"></div>
-    <div class="cardViewer">
-        <div class="card">
-            <h1>Welcome to H-manage+</h1>
+    <div class="" style="margin: 0">
+        <div style="padding-block: 20px; color: white; padding-inline: 200px; height: 400px;
+         background-image: linear-gradient(to right, #220081, #c941ff)">
+            <div style="display: flex; flex-direction: column; justify-content: space-between; padding-block: 24px">
+            <div>
+            <h1 style="font-size: xxx-large">Welcome to H-manage+</h1>
             <p>This web app allows you to manage <br> all your hostel needs.</p>
+            </div>
+
+            <a id="getStarted" style="text-decoration: none; color: white;" href="/register">
+                Get started </a>
+
+            </div>
+        </div>
+        <div style="padding-block: 20px;padding-inline: 200px;">
+            <h1 style="font-size: xxx-large">Features. Loaded!</h1>
+            <div class="features">
+                <div class="feat">
+                    <div>Chatting Groups</div>
+                    <div>Inventory</div>
+                    <div>Bulletin</div>
+                    <div>Complaints</div>
+                    <div>Services</div>
+                </div>
+                <div class="featDesc" style="text-align: right; width: 40%">
+                    Allows you to chat with your friends and discuss about related issues in your hostel. Create group and chat.
+                </div>
+            </div>
+            <script type="application/javascript">
+                let features = document.getElementsByClassName("feat")[0].children;
+                let featMap = {
+                    'Chatting Groups': 'Allows you to chat with your friends and discuss about related issues in your hostel. Create group and chat. ',
+                    'Inventory': 'Keep track of all the inventory in your hostel.',
+                    'Bulletin': 'Get all the important and latest news related to mess/hostel',
+                    'Complaints': 'Now you can complaint the issues related to hostel and get them resolved by the admin',
+                    'Services': 'Keep track of all the Multi tasking Services in the hostel'
+                }
+                let desc = document.getElementsByClassName("featDesc")[0];
+                for(let i = 0;i<features.length;i++) {
+                    console.log("sdfsdf");
+                    let feature = features[i].innerHTML.toString();
+                    features[i].addEventListener('mouseover', ()=>{
+                       desc.innerHTML = featMap[feature];
+                    });
+                }
+            </script>
         </div>
     </div>
 

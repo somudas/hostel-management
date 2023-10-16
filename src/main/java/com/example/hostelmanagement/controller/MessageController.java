@@ -63,6 +63,7 @@ public class MessageController {
     @GetMapping("/chats")
     public String getAllGroups(Principal principal, Model model){
         User currentUser= memberService.findUser(principal.getName());
+
         List<MessageGroup> msgGrps = messageService.getAllGroups(currentUser.getMid(), currentUser.getRole());
         List<Member> members = memberService.viewAll();
         members.removeIf(mem -> mem.getMid().equals(currentUser.getMid()) && mem.getRole().equals(currentUser.getRole()));
