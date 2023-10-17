@@ -76,6 +76,14 @@ CREATE TABLE IF NOT EXISTS GROUP_MEMBERSHIP(
 
 ALTER TABLE GROUP_MEMBERSHIP ADD  unreadCnt int not null default 0
 
+create table if not exists inventory(
+    itemId int(8) not null auto_increment,
+    itemName varchar(50) not null,
+    quantity int not null default 0,
+    thresholdQuantity int,
+    primary key(itemId)
+);
+
 
 
 
