@@ -53,7 +53,7 @@ public class WebConfig {
                 (authz) -> authz
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
                         .requestMatchers("/assets/**", "/chats", "/index..html", "/", "/logout", "/login", "/register").permitAll()
-                        .requestMatchers("/student", "/api/**", "/establish-socket-connection", "/complaints/**", "/socket/**").hasAuthority("student")
+                        .requestMatchers("/student", "/api/**", "/establish-socket-connection", "/socket/**", "/inventory/**", "/complaints/**").hasAuthority("student")
                         .requestMatchers("/api/create/group").permitAll()
 //                        .anyRequest().denyAll()
         ).formLogin((formlogin) ->  formlogin.loginPage("/login").permitAll())

@@ -3,11 +3,9 @@
         <div style="font-weight: bolder; font-size: x-large">H-manage+</div>
         <div class="menu">
             <a href="/">Home</a>
-            <div sec:authorize="isAuthenticated()" style="display: flex; flex-direction: row; gap: 12px">
-                <a style="text-decoration: none; color: white" href="/complaints/resolved">Complaints</a>
-                <a style="text-decoration: none; color: white" href="#">Inventory</a>
-                <a style="text-decoration: none; color: white" href="/chats">Chat</a>
-            </div>
+            <a href="#">Complaints</a>
+            <a href="/inventory">Inventory</a>
+            <a href="/chats">Chat</a>
         </div>
         <div>
             <div sec:authorize="isAuthenticated()" style="display: flex; flex-direction: row; gap: 12px">

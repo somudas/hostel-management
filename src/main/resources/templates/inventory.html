@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <form action="/inventory/additem" method="post">
+            <input type="text" name="itemName" placeholder="Enter Item Name" required>
+            <button type="submit">Add Item</button>
+        </form>
+    </div>
+
+    <div>
+        <form action="/inventory/addquantity" method="post">
+            <input type="number" name="itemId" placeholder="Enter Item ID" required>
+            <input type="text" name="addedQuantity" placeholder="Enter Change" required>
+            <button type="submit">Change</button>
+        </form>
+    </div>
+
+    <div>
+        <form action="/inventory/deleteitem" method="post">
+            <input type="number" name="itemId" placeholder="Enter Item ID to delete" required>
+            <button type="submit">Delete Item</button>
+        </form>
+    </div>
+
+    <h1>INVENTORY</h1>
+    <div th:each="inventory: ${inventoryList}">
+        <p th:text="${inventory.itemId + ', ' + inventory.itemName + ', ' + inventory.quantity}"> </p>
+    </div>
+</body>
+</html>
