@@ -36,5 +36,5 @@ public class Complaint {
     private Integer postedById;
 
     @NotNull
-    private Role postedByRole;
+    private String postedByRole;
 }

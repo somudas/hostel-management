@@ -312,6 +312,34 @@ button:hover {
 .chatMiddle > div > div {
     display: none;
 }
+.leftComplaint{
+    background-image: linear-gradient(to right, #029eff, #010164);
+    color: white;
+    padding-inline: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    /*box-shadow: 5px 0 10px #a9a9a9;*/
+}
+a{
+    text-decoration: none;
+    color: white;
+}
+
+.leftComplaint > div > div {
+    padding: 12px;
+}
+.leftComplaint > div > div > a {
+    padding: 12px;
+    text-decoration: none;
+    color: white;
+}
+.leftComplaint > div > div:hover {
+    background-color: #00499d;
+    border-radius: 12px 12px 0 0;
+    cursor: pointer;
+}
 
 /*.newgroupmemberlist > div > input {*/
 /*    visibility: hidden;*/

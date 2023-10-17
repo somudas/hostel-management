@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Complaint</title>
+</head>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<body>
+    <div th:replace="~{fragments/headers :: header}"></div>
+    <div class="cardViewer">
+        <div class="card">
+            <h2>Register your Complaint</h2>
+            <form th:action="@{/complaints/register}" th:object="${complaint}" method="post">
+                <label for="title"></label>
+                <input id="title" placeholder="Title" type="text" style="width: 50%; margin-bottom: 12px" required th:field="*{title}">
+
+                <label for="desc"></label>
+                <input id="desc" placeholder="Description" type="text" style="width: 70%" required th:field="*{description}">
+                <br>
+                <button style="margin-block: 12px; background-color: royalblue; border-radius: 8px; padding: 12px; border: none; color: white" type="submit">Submit Complaint</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

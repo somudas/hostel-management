@@ -25,6 +25,11 @@ public class HomeController {
         this.passwordEncoder = passwordEncoder;
         this.memberService = memberService;
     }
+    @GetMapping("/error")
+    @ResponseBody
+    public String error() {
+        return "<h1>Oops something went wrong!!</h1>";
+    }
     @GetMapping("/")
     public String home(Principal principal, Model model) {
         if (principal == null) model.addAttribute("loggedIn", false);

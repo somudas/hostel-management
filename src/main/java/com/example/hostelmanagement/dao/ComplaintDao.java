@@ -19,11 +19,12 @@ public class ComplaintDao {
 
     public int insertComplaint(Complaint complaint) {
         final String sql = "INSERT INTO COMPLAINTS(title, description, status, feedback, postedById, postedByRole) values(?,?,?,?,?,?)";
+        System.out.println(complaint.getStatus());
 //        System.out.println(member.getEmail() + " "+ member.getFirstName() + " " + member.getLastName());
         int res = jdbcTemplate.update(sql,
                 complaint.getTitle(),
                 complaint.getDescription(),
-                complaint.getStatus(),
+                complaint.getStatus().name(),
                 complaint.getFeedback(),
                 complaint.getPostedById(),
                 complaint.getPostedByRole()
@@ -33,5 +34,9 @@ public class ComplaintDao {
     public List<Complaint> getComplaintsOfMember(Integer MID, String memberRole) {
         final String sql = String.format("SELECT * from COMPLAINTS where postedById=%d and postedByRole='%s'",MID,memberRole );
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Complaint.class));
+    }
+    public int resolveComplaint(Integer cmpId) {
+        final String sql = String.format("update complaints set status='RESOLVED' where cmpId=%d", cmpId);
+        return jdbcTemplate.update(sql);
     }
 }
