@@ -266,6 +266,13 @@ button:hover {
     justify-content: center;
     align-items: center;
 }
+.btn {
+    padding: 8px;
+    padding-inline: 16px;
+    background-color: black;
+    color: white;
+    border-radius: 12px;
+}
 
 .modalBody {
     background-color: white;
@@ -326,6 +333,8 @@ a{
     text-decoration: none;
     color: white;
 }
+
+
 
 .leftComplaint > div > div {
     padding: 12px;

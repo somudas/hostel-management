@@ -1,43 +1,55 @@
 package com.example.hostelmanagement.controller;
 
 import com.example.hostelmanagement.model.Inventory;
+import com.example.hostelmanagement.model.User;
 import com.example.hostelmanagement.service.InventoryService;
+import com.example.hostelmanagement.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class InventoryController {
     private final InventoryService inventoryService;
-
+    private final MemberService memberService;
     @Autowired
-    public InventoryController(InventoryService inventoryService) {
+    public InventoryController(MemberService memberService, InventoryService inventoryService) {
         this.inventoryService = inventoryService;
+        this.memberService = memberService;
     }
 
     @GetMapping("/inventory")
-    public String inventory(Model model) {
+    public String inventory(Principal principal, Model model) {
+        User currentUser= memberService.findUser(principal.getName());
+        if(!currentUser.getRole().equals("WARDEN")) {
+            return "redirect:/error";
+        }
         List<Inventory> inventoryList = inventoryService.getAllInventoryData();
         model.addAttribute("inventoryList", inventoryList);
+        model.addAttribute("inventory", new Inventory());
         return "inventory";
     }
 
-    @PostMapping("/inventory/additem")
-    public String addItem(@RequestParam("itemName") String itemName) {
-        int res = inventoryService.insertItemByItemName(itemName);
-        return "redirect:/inventory";
+    @PostMapping("/inventory/addItem")
+    public String addItem(@ModelAttribute Inventory inventory, Model model) {
+        model.addAttribute("inventory", inventory);
+        System.out.println(inventory.getItemName());
+        System.out.println(inventory.getQuantity());
+        if(inventoryService.insertItem(inventory) == 1)
+            return "redirect:/inventory";
+        return "redirect:/error";
     }
 
     @PostMapping("/inventory/addquantity")
-    public String addQuantity(@RequestParam("itemId") int itemId, @RequestParam("addedQuantity") int addedQuantity) {
-        int res = inventoryService.addQuantityByItemId(itemId, addedQuantity);
-        return "redirect:/inventory";
+    @ResponseBody
+    public int addQuantity(@RequestBody Inventory inventory) {
+        int res = inventoryService.addQuantityByItemId(Math.toIntExact(inventory.getItemId()), inventory.getQuantity());
+        return res;
     }
 
     @PostMapping("/inventory/deleteitem")

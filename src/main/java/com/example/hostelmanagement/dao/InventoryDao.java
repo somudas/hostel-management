@@ -23,9 +23,11 @@ public class InventoryDao {
     }
 
     public int insertItem(Inventory inventory) {
-        final String sql = "INSERT INTO inventory(itemName) values(?)";
+        final String sql = "INSERT INTO inventory(itemName, quantity, thresholdQuantity) values(?, ?, ?)";
         int res = jdbcTemplate.update(sql,
-                inventory.getItemName()
+                inventory.getItemName(),
+                inventory.getQuantity(),
+                inventory.getThresholdQuantity()
         );
 
         return res;
@@ -37,12 +39,12 @@ public class InventoryDao {
     }
 
     public int addQuantity(Inventory inventory, int addedQuantity) {
-        final String sql = "update inventory set @quantity = @quantity + ? where itemId = ?";
+        final String sql = "update inventory set @quantity = ? where itemId = ?";
         return jdbcTemplate.update(sql, addedQuantity, inventory.getItemId());
     }
 
     public int addQuantityByItemId(int itemId, int addedQuantity) {
-        final String sql = "update inventory set quantity = quantity + ? where itemId = ?";
+        final String sql = "update inventory set quantity = ? where itemId = ?";
         return jdbcTemplate.update(sql, addedQuantity, itemId);
     }
 

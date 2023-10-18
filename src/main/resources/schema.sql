@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS GROUP_MEMBERSHIP(
     FOREIGN KEY (grpId) REFERENCES MESSAGE_GROUP(grpId)
 );
 
-ALTER TABLE GROUP_MEMBERSHIP ADD  unreadCnt int not null default 0
+ALTER TABLE GROUP_MEMBERSHIP ADD  unreadCnt int not null default 0;
 
 create table if not exists inventory(
     itemId int(8) not null auto_increment,

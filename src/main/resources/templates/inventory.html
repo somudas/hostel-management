@@ -2,34 +2,144 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Inventory</title>
 </head>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+
 <body>
-    <div>
-        <form action="/inventory/additem" method="post">
-            <input type="text" name="itemName" placeholder="Enter Item Name" required>
-            <button type="submit">Add Item</button>
+<div class="modal" id="popup">
+    <div class="modalBody" style="width: 40%; height: 40%">
+
+        <div style="font-size: x-large; font-weight: bold">Add a New Inventory Item</div>
+        <form th:action="@{/inventory/addItem}" th:object="${inventory}" method="post" style="margin-top: 12px;display: flex; flex-direction: column; gap: 10px">
+            <input placeholder="Item Name" style="width: 50%" type="text" th:field="*{itemName}" required>
+            <input placeholder="Quantity" style="width: 40%;" type="number" th:field="*{quantity}" min="0" required>
+            <input placeholder="Threshold Quantity" style="width: 40%" type="number" th:field="*{thresholdQuantity}" min="0">
+            <button type="submit" class="btn" style="width: 30%">Add Item</button>
         </form>
     </div>
 
-    <div>
-        <form action="/inventory/addquantity" method="post">
-            <input type="number" name="itemId" placeholder="Enter Item ID" required>
-            <input type="text" name="addedQuantity" placeholder="Enter Change" required>
-            <button type="submit">Change</button>
-        </form>
-    </div>
+</div>
+   <div th:replace="~{fragments/headers :: header}"></div>
+   <div style="display: flex; flex-direction: row; justify-content: space-between; padding-inline: 200px">
+       <div>
+       <button class="beforeEdit" onclick="showModal()" style="color: white;margin-top: 12px; width: 150px; padding-inline: 14px; padding-block: 8px; border-radius: 12px; border: none; background-color: forestgreen">Add Item</button>
+       </div>
+       <button class="beforeEdit" onclick="editAccess()" style="color: white;margin-top: 12px; width: 150px; padding-inline: 14px; padding-block: 8px; border-radius: 12px; border: none; background-color: black">Edit</button>
+       <div style="display: flex; flex-direction: row; gap: 8px" id="afterEdit">
+           <button class="afterEdit" onclick="doNothing()" style="color: white;margin-top: 12px; width: 150px; padding-inline: 14px; padding-block: 8px; border-radius: 12px; border: none; background-color: black">Cancel Changes</button>
+           <button class="afterEdit" onclick="commitChanges()" style="color: white;margin-top: 12px; width: 150px; padding-inline: 14px; padding-block: 8px; border-radius: 12px; border: none; background-color: royalblue">Commit Changes</button>
+       </div>
+   </div>
 
-    <div>
-        <form action="/inventory/deleteitem" method="post">
-            <input type="number" name="itemId" placeholder="Enter Item ID to delete" required>
-            <button type="submit">Delete Item</button>
-        </form>
+    <div class="cardViewer" >
+        <div class="card" style="box-shadow: none;display: flex; flex-direction: row; justify-content: space-around">
+            <div class="beforeEdit" style="width: 10%">S.No.</div>
+            <div class="afterEdit" style="width: 10%;">Mark for Removal</div>
+            <div style="width: 30%">Item Name</div>
+            <div style="width: 30%">Threshold Quantity</div>
+            <div style="width: 30%">Quantity</div>
+        </div>
+        <div class="card" th:each="item: ${inventoryList}" style="box-shadow: none; border: 1px solid black; display: flex; flex-direction: row; justify-content: space-around">
+            <div style="display: flex; flex-direction: row; width: 10%;">
+                <input type="checkbox" class="afterEdit removal" th:itemId="${item.itemId}" style="padding: 4px">
+                <div class="beforeEdit" th:text="${'#'+item.getItemId()}"></div>
+            </div>
+            <div th:text="${item.getItemName()}" style="width: 30%"></div>
+            <div th:text="${item.getThresholdQuantity()==null ? '-' : item.getThresholdQuantity()}" style="width: 30%"></div>
+            <div style="display: flex; flex-direction: row; justify-content: space-between; width: 30%" class="editor">
+                <button class="afterEdit" th:itemId="${item.itemId}" style="background-color: red">-</button>
+                <div th:itemId="${item.itemId}" th:text="${item.getQuantity()}"></div>
+                <button class="afterEdit" th:itemId="${item.itemId}" style="background-color: green; color:white">+</button>
+            </div>
+        </div>
     </div>
+    <script type="text/javascript">
+        let modal = document.getElementById("popup");
+        let editor = document.getElementsByClassName("editor");
+        let afterEditor = document.getElementsByClassName("afterEdit");
+        let removal = document.getElementsByClassName("removal");
 
-    <h1>INVENTORY</h1>
-    <div th:each="inventory: ${inventoryList}">
-        <p th:text="${inventory.itemId + ', ' + inventory.itemName + ', ' + inventory.quantity}"> </p>
-    </div>
+        document.getElementById("afterEdit").style.display = 'none';
+        for(let i=0;i<afterEditor.length;i++) {
+            afterEditor[i].style.display = 'none';
+        }
+        for(let i=0;i<editor.length;i++) {
+            let minus = editor[i].children[0];
+            let content = editor[i].children[1];
+            let add = editor[i].children[2];
+            minus.addEventListener("click", function(){
+                let x = parseInt(content.innerHTML);
+                content.innerHTML = Math.max(x - 1, 0).toString();
+            });
+            add.addEventListener("click", function(){
+                let x = parseInt(content.innerHTML);
+                content.innerHTML = (x+1).toString();
+            });
+        }
+        function editAccess() {
+            let editor = document.getElementsByClassName("afterEdit");
+            document.getElementById("afterEdit").style.display = 'flex';
+            for(let i=0;i<editor.length;i++) {
+                editor[i].style.display = 'block';
+            }
+
+            let hidden = document.getElementsByClassName("beforeEdit");
+            for(let i=0;i<hidden.length;i++) {
+                hidden[i].style.display = 'none';
+            }
+
+        }
+        function doNothing() {
+            location.reload();
+        }
+        function commitChanges() {
+            let promises2 = [];
+            for(let i=0;i<removal.length;i++) {
+                if(!removal[i].checked) continue;
+                let idx = removal[i].getAttribute("itemId");
+                const URL = "/inventory/deleteitem?itemId=" + idx;
+                promises2.push(fetch(URL, {
+                    method: "POST",
+                    headers: {
+                        'Content-type': 'application/json'
+                    }
+                }));
+            }
+            Promise.all(promises2).then(function() {
+                let promises = [];
+                for(let i=0;i<editor.length; i++) {
+                    let content = editor[i].children[1];
+                    let idx = content.getAttribute("itemId");
+                    let val = parseInt(content.innerHTML);
+
+                    const URL = "/inventory/addquantity";
+                    promises.push(fetch(URL, {
+                        method: "POST",
+                        headers: {
+                            'Content-type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            itemId: idx,
+                            quantity: val
+                        })
+                    }));
+                }
+                Promise.all(promises).then(function() {
+                    location.reload();
+                });
+            });
+        }
+        function showModal() {
+            modal.style.display = 'flex';
+        }
+
+        window.onclick = function(event) {
+            if(event.target === modal) {
+                console.log("sdf")
+                modal.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
