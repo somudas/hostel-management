@@ -12,8 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.Integer.parseInt;
 
@@ -29,19 +28,29 @@ public class ComplaintController {
     }
     private List<Complaint> filterByStatus(Principal principal, complaintStatus complaintStatus) {
         User user = memberService.findUser(principal.getName());
-        List<Complaint> listComplaints = complaintService.getComplaintsOfUser(user.getMid(), user.getRole());
+
+        List<Complaint> listComplaints = new ArrayList<Complaint>();
+        if(user.getRole().equals("WARDEN")) {
+            listComplaints = complaintService.getAll();
+        }else{
+            listComplaints = complaintService.getComplaintsOfUser(user.getMid(), user.getRole());
+        }
         List<Complaint> filtered = new ArrayList<Complaint>();
         listComplaints.stream().filter(complaint -> complaint.getStatus() == complaintStatus).forEach(filtered::add);
         return filtered;
     }
     @GetMapping("/complaints/resolved")
     public String complaint(Principal principal, Model model) {
+        User user = memberService.findUser(principal.getName());
+        model.addAttribute("isAdmin", user.getRole().equals("WARDEN"));
         model.addAttribute("isResolved", true);
         model.addAttribute("complaints", filterByStatus(principal, complaintStatus.RESOLVED));
         return "complaint";
     }
     @GetMapping("/complaints/unresolved")
     public String complaintUnresolved(Principal principal, Model model) {
+        User user = memberService.findUser(principal.getName());
+        model.addAttribute("isAdmin", user.getRole().equals("WARDEN"));
         model.addAttribute("isResolved", false);
         model.addAttribute("complaints", filterByStatus(principal, complaintStatus.UNRESOLVED));
         return "complaint";
@@ -68,6 +77,13 @@ public class ComplaintController {
     @PostMapping("/complaints/resolve")
     public String resolve(Principal principal, @RequestParam("id") String cmpId) {
         if(complaintService.resolveComplaint(parseInt(cmpId)) == 1)
+            return "redirect:/complaints/resolved";
+        return "redirect:/error";
+    }
+
+    @PostMapping("/complaints/feedback")
+    public String feedback(Principal principal, @RequestParam("cmpId") Integer cmpId, @RequestParam("feedback") String content) {
+        if(complaintService.addFeedback(cmpId, content) == 1)
             return "redirect:/complaints/resolved";
         return "redirect:/error";
     }

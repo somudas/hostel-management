@@ -20,7 +20,13 @@ public class ComplaintService {
     public List<Complaint> getComplaintsOfUser(Integer mid, String role) {
         return complaintDao.getComplaintsOfMember(mid, role);
     }
+    public List<Complaint> getAll() {
+        return complaintDao.getAll();
+    }
     public int resolveComplaint(Integer cmpId) {
         return complaintDao.resolveComplaint(cmpId);
+    }
+    public int addFeedback(Integer cmpId, String content) {
+        return complaintDao.addFeedback(cmpId, content);
     }
 }

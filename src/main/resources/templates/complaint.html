@@ -39,7 +39,7 @@
                         <div style="display: flex; flex-direction: column">
                             <h2 th:text="${'#' + complaint.cmpId + ' ' + complaint.title}"></h2>
                             <div th:text="${complaint.description}"></div>
-                            <div th:if="${complaint.status.toString() == 'UNRESOLVED'}">
+                            <div th:if="${complaint.status.toString() == 'UNRESOLVED' && isAdmin}">
                                 <form action="/complaints/resolve" method="post">
                                     <input type="hidden" name="id" th:value="${complaint.cmpId}">
                                     <button type="submit" style="margin-top: 12px; width: 150px; padding-inline: 14px; padding-block: 8px; border-radius: 4px; border: none; background-color: lightgreen">Resolve</button>
@@ -48,24 +48,30 @@
                         </div>
                         <div style="display: flex; flex-direction: column; justify-content: space-between;">
                             <div th:switch="${complaint.status.toString()}">
-                                <div th:case="'RESOLVED'" style="font-size: small; font-weight: 500;background-color: green; padding: 4px; border-radius: 8px; color: white"> RESOLVED</div>
-                                <div th:case="'UNRESOLVED'" style="font-size: small; font-weight: 500;background-color: red; padding: 4px; border-radius: 8px; color: white"> UNRESOLVED</div>
+                                <div th:case="'RESOLVED'" style="font-size: small; font-weight: 500;background-color: green; padding: 6px; border-radius: 12px; color: white"> RESOLVED</div>
+                                <div th:case="'UNRESOLVED'" style="font-size: small; font-weight: 500;background-color: red; padding: 6px; border-radius: 12px; color: white"> UNRESOLVED</div>
                                 <div th:case="*" style="background-color: black"> UNRESOLVED</div>
                             </div>
                             <div th:text="${complaint.getPostedAt()}" style="text-align: right; font-size: 12px; padding-block: 1px"></div>
                         </div>
                     </div>
-                    <div th:if="${complaint.status.toString() == 'RESOLVED'}" style="display:flex; flex-direction:column;margin-block: 12px; gap: 8px;">
-                        <button th:cmpId="${complaint.cmpId}" class="handleFeedback" style="color: white;margin-top: 12px; width: 150px; padding-inline: 14px; padding-block: 8px; border-radius: 4px; border: none; background-color: royalblue">Give Feedback</button>
+                    <div th:if="${complaint.feedback != null}" style="margin-block: 12px;">
+                        <div style="font-weight: 500;">Feedback</div>
+                        <div th:text="${complaint.feedback}" style="font-size: small"></div>
                     </div>
-                    <div th:cmpId="${complaint.cmpId}" th:if="${complaint.status.toString() == 'RESOLVED'}" style="display: none; flex-direction:column;margin-block: 12px; gap: 8px; transition-delay: 0.4s" class="feedbackResolve">
-                        <div>Give Feedback</div>
-                        <form action="/complaints/feedback" method="post">
-                            <textarea name="feedback" id="feedback" rows="5" cols="100" style="font-family: 'Montserrat', sans-serif"></textarea>
-                            <br>
-                            <button type="submit" style="color: white;margin-top: 12px; width: 150px; padding-inline: 14px; padding-block: 8px; border-radius: 4px; border: none; background-color: royalblue">Submit Feedback</button>
-                        </form>
-
+                    <div th:if="${complaint.feedback == null && !isAdmin}">
+                        <div th:if="${complaint.status.toString() == 'RESOLVED'}" style="display:flex; flex-direction:column;margin-block: 12px; gap: 8px;">
+                            <button th:cmpId="${complaint.cmpId}" class="handleFeedback" style="color: white;margin-top: 12px; width: 150px; padding-inline: 14px; padding-block: 8px; border-radius: 4px; border: none; background-color: royalblue">Give Feedback</button>
+                        </div>
+                        <div th:cmpId="${complaint.cmpId}" th:if="${complaint.status.toString() == 'RESOLVED'}" style="display: none; flex-direction:column;margin-block: 12px; gap: 8px; transition-delay: 0.4s" class="feedbackResolve">
+                            <div>Give Feedback</div>
+                            <form action="/complaints/feedback" method="post">
+                                <input type="hidden" name="cmpId" th:value="${complaint.cmpId}">
+                                <textarea name="feedback" id="feedback" rows="5" cols="100" style="font-family: 'Montserrat', sans-serif"></textarea>
+                                <br>
+                                <button type="submit" style="color: white;margin-top: 12px; width: 150px; padding-inline: 14px; padding-block: 8px; border-radius: 4px; border: none; background-color: royalblue">Submit Feedback</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

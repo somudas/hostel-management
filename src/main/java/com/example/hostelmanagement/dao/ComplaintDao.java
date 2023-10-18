@@ -39,4 +39,11 @@ public class ComplaintDao {
         final String sql = String.format("update complaints set status='RESOLVED' where cmpId=%d", cmpId);
         return jdbcTemplate.update(sql);
     }
+    public int addFeedback(Integer cmpId, String content) {
+        final String sql = String.format("update complaints set feedback='%s' where cmpId=%d", content, cmpId);
+        return jdbcTemplate.update(sql);
+    }
+    public List<Complaint> getAll() {
+        return jdbcTemplate.query("select * from complaints", new BeanPropertyRowMapper<>(Complaint.class));
+    }
 }

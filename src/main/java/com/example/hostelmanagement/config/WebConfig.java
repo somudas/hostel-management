@@ -52,8 +52,8 @@ public class WebConfig {
                 .authorizeHttpRequests(
                 (authz) -> authz
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
-                        .requestMatchers("/assets/**", "/chats", "/index..html", "/", "/logout", "/login", "/register").permitAll()
-                        .requestMatchers("/student", "/api/**", "/establish-socket-connection", "/socket/**", "/inventory/**", "/complaints/**").hasAuthority("student")
+                        .requestMatchers("/assets/**", "/chats", "/index..html", "/", "/logout", "/login", "/register", "/error").permitAll()
+                        .requestMatchers("/student", "/api/**", "/establish-socket-connection", "/socket/**", "/inventory/**", "/complaints/**").hasAnyAuthority("student", "warden")
                         .requestMatchers("/api/create/group").permitAll()
 //                        .anyRequest().denyAll()
         ).formLogin((formlogin) ->  formlogin.loginPage("/login").permitAll())
