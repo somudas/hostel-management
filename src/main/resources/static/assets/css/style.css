@@ -99,7 +99,7 @@ body {
     border-radius: 16px;
 }
 
-input{
+input,#assignedStaff{
     font-family: Montserrat, sans-serif;
     border-radius: 10px;
     width: 100%;
@@ -107,7 +107,7 @@ input{
     border: 1px solid blue;
     background-color: rgba(232, 240, 254, 1.0);
 }
-input:focus {
+input:focus,#assignedStaff {
     border-radius: 18px;
     border: 2px solid blue;
     outline: none !important;

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Service</title>
+</head>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<body>
+<div th:replace="~{fragments/headers :: header}"></div>
+<div class="cardViewer">
+    <div class="card">
+        <h2>Add a Service</h2>
+        <form th:action="@{/services/add}" th:object="${service}" method="post">
+            <div>
+            <label for="serviceName">Service name</label>
+            <input id="serviceName" placeholder="service name" type="text" style="width: 30%; margin-bottom: 12px" required th:field="*{serviceName}">
+            </div>
+            <div>
+                <label for="assignedStaff">Assigned to staff</label>
+            <select id="assignedStaff" th:field="*{assignedToId}" style="width: 30%">
+                <option th:each="item : ${allMembers}" th:if="${item.role == 'STAFF'}"   th:value="${item.mid}" th:text="${item.firstname}+' '+${item.lastname}"></option>
+            </select>
+            </div>
+            <br>
+            <button style="margin-block: 12px; background-color: royalblue; border-radius: 8px; padding: 12px; border: none; color: white" type="submit">Add Service</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
