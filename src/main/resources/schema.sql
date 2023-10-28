@@ -42,6 +42,14 @@ create table authorities (
 
 create unique index ix_auth_username on authorities (username,authority);
 
+insert into members(MID, ROLE, FIRSTNAME, BATCH, BRANCH, DATEOFBIRTH, EMAIL, PHONENUMBER)
+VALUES (13075000, 'WARDEN', 'WARDEN', 1919, 'NON', '1919-01-01', 'warden.vs@itbhu.ac.in' ,'1234567890');
+
+insert into users (username, password, enabled, mid, role)
+values('WARDEN13075000', '$2a$10$8FO4rPlvg7aPJe5QUIbcdeCT9eiOZD3v0RVvhSh4Se9hBtLabffqK', true, 13075000, 'warden');
+
+insert into authorities (username, authority)
+values('WARDEN13075000', 'WARDEN');
 
 CREATE TABLE IF NOT EXISTS MESSAGE_GROUP(
                                        grpId         int AUTO_INCREMENT primary key,

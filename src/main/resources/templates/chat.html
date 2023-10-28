@@ -91,7 +91,7 @@
                         <div style="display: flex; flex-direction: row; justify-content: space-between; padding: 12px">
                             <div class="groupBody">
                                 <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
-                                     th:text="${message.firstname[0] + (message.lastname.length()>0?message.lastname[0]:'')}"></div>
+                                     th:text="${message.firstname[0] + (message.lastname==null?message.lastname[0]:'')}"></div>
                                 <div style="display: flex; flex-direction: column;">
                                     <div style="font-weight: 500; font-size: 14px;" th:text="${message.firstname + ' ' + message.lastname}"></div>
                                     <div style="font-size: small" th:text="${message.content}"></div>
