@@ -8,6 +8,7 @@ import com.example.hostelmanagement.model.Member;
 import com.example.hostelmanagement.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class MemberService {
         this.userDao = userDao;
     }
 
+    @Transactional
     public int insertMember(Member m, User user) {
          return memberDao.insertMember(m) & userDao.insertUser(user);
     }

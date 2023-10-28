@@ -7,6 +7,7 @@ import com.example.hostelmanagement.model.MessageGroup;
 import com.example.hostelmanagement.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +23,13 @@ public class MessageService {
         this.groupDao = groupDao;
         this.memberDao = memberDao;
     }
+    @Transactional
     public Message addMessage(Message msg){
         Message addedMessage=messageDao.addMessage(msg);
         groupDao.updateUnreadCnt(addedMessage.getGrpId());
         return addedMessage;
     }
-
+    @Transactional
     public int createGroup(MessageGroup grp){
         Integer grpId=groupDao.addGroup(grp);
         for(Member member: grp.getMembers())
