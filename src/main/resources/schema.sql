@@ -92,6 +92,21 @@ create table if not exists inventory(
     primary key(itemId)
 );
 
+create table if not exists services(
+                                        serviceId int(8) not null auto_increment,
+                                        serviceName varchar(50) not null,
+                                        assignedToId  INT(8) NOT NULL,
+                                        assignedToRole  ENUM('STAFF') default 'STAFF',
+                                        lastUpdatedOn datetime default current_timestamp not null,
+                                        primary key(serviceId),
+                                        FOREIGN KEY (assignedToId, assignedToRole) REFERENCES MEMBERS(MID, ROLE)
+);
+
+ALTER TABLE MEMBERS MODIFY COLUMN  ROLE  ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN','STAFF') NOT NULL;
+ALTER TABLE users MODIFY COLUMN  role  ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN','STAFF') NOT NULL;
+
+
+
 
 
 

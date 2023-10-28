@@ -36,14 +36,14 @@ public class ComplaintDao {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Complaint.class));
     }
     public int resolveComplaint(Integer cmpId) {
-        final String sql = String.format("update complaints set status='RESOLVED' where cmpId=%d", cmpId);
+        final String sql = String.format("update COMPLAINTS set status='RESOLVED' where cmpId=%d", cmpId);
         return jdbcTemplate.update(sql);
     }
     public int addFeedback(Integer cmpId, String content) {
-        final String sql = String.format("update complaints set feedback='%s' where cmpId=%d", content, cmpId);
+        final String sql = String.format("update COMPLAINTS set feedback='%s' where cmpId=%d", content, cmpId);
         return jdbcTemplate.update(sql);
     }
     public List<Complaint> getAll() {
-        return jdbcTemplate.query("select * from complaints", new BeanPropertyRowMapper<>(Complaint.class));
+        return jdbcTemplate.query("select * from COMPLAINTS", new BeanPropertyRowMapper<>(Complaint.class));
     }
 }
