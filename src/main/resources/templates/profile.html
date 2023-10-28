@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<body>
+  <div th:replace="~{fragments/headers :: header}"></div>
+    <div class="cardViewer">
+        <div class="card" style="display: flex; flex-direction: row; align-items: center; gap: 24px; padding: 24px; width: 40%">
+            <div style="color: white; font-size: xx-large; display: flex; align-items: center; justify-content: center; width: 100px; height: 100px; border-radius: 50%; background-color: royalblue"
+                 th:text="${member.firstname[0] + (member.lastname.length()>0?member.lastname[0]:'')}">
+            </div>
+            <div>
+                <div style="font-size: large; font-weight: bold; margin-bottom: 12px">My Profile</div>
+                <div style="font-size: medium;" th:text="${member.role + '#' + member.mid}"></div>
+                <div style="border: 1px solid black; font-size: x-large; font-weight: bold" th:text="${member.firstname + ' ' + member.lastname}"></div>
+                <div style="font-size: large; font-weight: 500" th:text="${member.branch + '`' + member.batch}"></div>
+                <div style="font-size: large; font-weight: 500" th:text="${member.email}"></div>
+                <div style="font-size: large; font-weight: 500" th:text="${member.phonenumber}"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

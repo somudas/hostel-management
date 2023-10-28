@@ -91,7 +91,7 @@
                         <div style="display: flex; flex-direction: row; justify-content: space-between; padding: 12px">
                             <div class="groupBody">
                                 <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
-                                     th:text="${message.firstname[0] + (message.lastname==null?message.lastname[0]:'')}"></div>
+                                     th:text="${message.firstname[0] + (message.lastname.length()>0?message.lastname[0]:'')}"></div>
                                 <div style="display: flex; flex-direction: column;">
                                     <div style="font-weight: 500; font-size: 14px;" th:text="${message.firstname + ' ' + message.lastname}"></div>
                                     <div style="font-size: small" th:text="${message.content}"></div>
@@ -163,11 +163,13 @@
             // console.log(strDate.split['T']);
             strDate = strDate.split('T')[0] + " " + strDate.split('T')[1];
             let date = new Date(strDate);
+            if(message['lastname'].length === 0)
+                message['lastname'] = ' ';
             dd.innerHTML = `
                     <div style="display: flex; flex-direction: row; justify-content: space-between; padding: 12px">
                         <div class="groupBody">
                             <div style="width: 35px; height: 35px; background-color: hotpink; border-radius: 50%; display: flex; justify-content: center; align-items: center;"
-                                >${message['firstname'][0]}${message['lastname'][0]}</div>
+                                >${message['firstname'][0]}${message['lastname']==null?'':message['lastname'][0]}</div>
                             <div style="display: flex; flex-direction: column; justify-content: space-between">
                                 <div style="font-size: 14px; font-weight: 500">${message['firstname']} ${message['lastname']}</div>
                                 <div style="font-size: small">${message['content']}</div>
@@ -195,7 +197,6 @@
                 // console.log(inpDiv);
                 let idx = inpDiv.getAttribute("groupId");
                 if(idx == grpId) {
-
                     // console.log(grpId, inpDiv);
                     if(block.style.display === 'none') {
                         console.log("this is unseen!");

@@ -32,8 +32,7 @@ public class HomeController {
     }
     @GetMapping("/")
     public String home(Principal principal, Model model) {
-        if (principal == null) model.addAttribute("loggedIn", false);
-        else model.addAttribute("loggedIn", true);
+        model.addAttribute("loggedIn", principal==null);
         return "index";
     }
 
@@ -84,11 +83,12 @@ public class HomeController {
         httpServletResponse.sendRedirect("/login");
     }
 
-
-    // REMOVE
-    @GetMapping("/student")
-    @ResponseBody
-    public String stud(Principal principal) {
-        System.out.println(principal.getName());return "<h1>sensititve info</h1>";
+    @GetMapping("/profile")
+    public String profile(Principal principal, Model model) {
+        User user = memberService.findUser(principal.getName());
+        Member member = memberService.getMember(user.getMid(), user.getRole());
+        model.addAttribute("member", member);
+        return "profile";
     }
+
 }

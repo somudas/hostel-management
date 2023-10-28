@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dues</title>
+</head>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<body>
+    <div th:replace="~{fragments/headers :: header}"></div>
+    <div th:if="${isAdmin}" class="cardViewer">
+        <input id="searchDues" oninput="filterDues()" type="text" placeholder="Search 🔍" style="width: 50%; margin: 24px;">
+        <a href="/dues/add" style="
+                box-shadow: 0 0 10px grey;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position:absolute;
+                top: 90%;
+                right: 25%;
+                font-size: large;
+                height: 48px;
+                width: 48px;
+                border-radius: 50%;
+                background-color: royalblue;
+                border: none;
+                color: white;
+            ">+</a>
+        <div style="overflow-y: scroll; width: 100%; display:flex; flex-direction:column; align-items: center; height: 69vh; padding: 12px; gap: 12px">
+            <div class="card" th:each="due : ${allDues}" style="width: 50%; box-shadow: 0 0 0 white; border: 1px solid black; display:flex; flex-direction: row; justify-content: space-between">
+                <div style="display:flex; flex-direction: column; gap: 4px">
+                    <div style="font-size: larger; font-weight: bold" th:text="${due.dueType}"></div>
+                    <div th:text="${'by ' + due.imposedOnRole + ' ' + due.imposedOnId}"></div>
+                    <div style="font-weight: 300; font-size: small" th:text="${'due date: ' + due.dueDate}"></div>
+                </div>
+                <div style="display:flex; flex-direction: column; justify-content: space-between;">
+                    <div th:if="${due.dueAmount>0}" style="color: green; font-size: large; font-weight: bold" th:text="${'₹'+due.dueAmount}"></div>
+                    <div th:if="${due.dueAmount<0}" style="color: red; font-size: large; font-weight: bold" th:text="${'₹' +due.dueAmount}"></div>
+                    <button th:onclick="'delDue(\'' + ${due.dueId} + '\')'" style="background-color: red; color: white; padding-block: 4px; padding-inline: 12px; border: none; border-radius: 8px">remove</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h1 th:if="${!isAdmin}" style="padding-inline: 25%;text-align: left">My Dues</h1>
+    <div th:if="${!isAdmin}" class="cardViewer">
+
+        <div class="card" th:each="due : ${filteredDues}" style="width: 50%; box-shadow: 0 0 0 white; border: 1px solid black; display:flex; flex-direction: row; justify-content: space-between">
+            <div style="display:flex; flex-direction: column; gap: 4px">
+                <div style="font-size: larger; font-weight: bold" th:text="${due.dueType}"></div>
+                <div style="font-weight: 300; font-size: small" th:text="${'due date: ' + due.dueDate}"></div>
+            </div>
+            <div style="display:flex; flex-direction: column; justify-content: center;">
+                <div th:if="${due.dueAmount>0}" style="color: green; font-size: large; font-weight: bold" th:text="${'₹'+due.dueAmount}"></div>
+                <div th:if="${due.dueAmount<0}" style="color: red; font-size: large; font-weight: bold" th:text="${'₹' +due.dueAmount}"></div>
+            </div>
+        </div>
+        <div class="card" style="width: 50%; box-shadow: 0 0 0 white;  display:flex; flex-direction: row; justify-content: space-between">
+            <div>total amount</div>
+            <div th:if="${totalAmount>0}" style="color: green; font-size: large; font-weight: bold" th:text="${'₹'+ totalAmount}"></div>
+            <div th:if="${totalAmount<0}" style="color: red; font-size: large; font-weight: bold" th:text="${'₹' + totalAmount}"></div>
+        </div>
+    </div>
+    <script>
+        function delDue(idx) {
+            fetch(`/dues/remove/${idx}`)
+                .then((res)=>res.json)
+                .then((res)=>location.reload())
+        }
+        function filterDues() {
+            let val = document.getElementById("searchDues").value;
+            let cards = document.getElementsByClassName("card");
+            for(let i=0;i<cards.length;i++) {
+                if(cards[i].innerHTML.toLowerCase().includes(val)) {
+                    cards[i].style.display = 'flex';
+                }else cards[i].style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

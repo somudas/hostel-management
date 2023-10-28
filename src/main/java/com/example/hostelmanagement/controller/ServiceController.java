@@ -41,7 +41,10 @@ public class ServiceController {
 
     @PostMapping("/services/add")
     private String addService(Principal principal, Model model,@ModelAttribute Service service){
+        model.addAttribute("service", service);
         service.setAssignedToRole("STAFF");
+        System.out.println("asd "+ service.getAssignedToId());
+        System.out.println("asd "+ service.getAssignedToRole());
         System.out.println(serviceService.addService(service));
         return "redirect:/services";
     }

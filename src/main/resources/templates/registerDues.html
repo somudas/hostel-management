@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Dues</title>
+
+</head>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<body>
+    <div th:replace="~{fragments/headers :: header}"></div>
+    <div class="cardViewer">
+        <div class="card">
+            <h2>Add Dues</h2>
+            <form th:action="@{/dues/add}" th:object="${dues}" method="post">
+                <div>
+                    <label for="dueType" style="width: 30%">Due Type</label>
+                    <input id="dueType" placeholder="Due Type" type="text" style="width: 30%; margin-bottom: 12px" required th:field="*{dueType}">
+                </div>
+                <div>
+                    <label for="serviceName" style="width: 30%">Due Amount</label>
+                    <input id="serviceName" placeholder="Due Amount" type="number" style="width: 30%; margin-bottom: 12px" required th:field="*{dueAmount}">
+                </div>
+                <div>
+                    <label for="imposedOnRole" >Role</label>
+                    <select id="imposedOnRole"  th:field="*{imposedOnRole}" style="width: 30%; margin-bottom: 12px;" required>
+                        <option th:each="item : ${allRoles}" th:value="${item}" th:text="${item}"></option>
+                    </select>
+                </div>
+                <div>
+                    <label for="imposedOn" style="width: 30%">Imposed On</label>
+                    <select id="imposedOn" th:field="*{imposedOnId}" style="width: 30%" required>
+                        <option th:each="item : ${allMembers}" th:value="${item.mid}" th:text="${item.firstname}+' '+${item.lastname}"></option>
+                    </select>
+                </div>
+                <div>
+                    <label for="duedate">Due Date</label>
+                    <input style="width: 30%; margin-top: 12px" type="date" name="date" id="duedate" required th:field="*{dueDate}">
+                </div>
+                <br>
+                <button style="margin-block: 12px; background-color: royalblue; border-radius: 8px; padding: 12px; border: none; color: white" type="submit">Add Due</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

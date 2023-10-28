@@ -7,10 +7,11 @@
             <a href="/inventory">Inventory</a>
             <a href="/services">Services</a>
             <a href="/chats">Chat</a>
+            <a href="/dues">Dues</a>
         </div>
         <div>
             <div sec:authorize="isAuthenticated()" style="display: flex; flex-direction: row; gap: 12px">
-                <div th:text="${#authentication.principal.username}"> </div>
+                <a href="/profile"><div th:text="${#authentication.principal.username}"> </div></a>
                 <form action="/logout" method="post">
                     <button type="submit" style="cursor: pointer; font-size: medium; background: none; border: none; color: white; font-family: 'Montserrat', sans-serif">Logout</button>
                 </form>

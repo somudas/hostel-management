@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class ServiceDao {
@@ -35,7 +36,7 @@ public class ServiceDao {
             ps.setString(3, service.getAssignedToRole());
             return ps;
         }, keyHolder);
-        return keyHolder.getKey().intValue();
+        return Objects.requireNonNull(keyHolder.getKey()).intValue();
     }
 
     public List<Service> getAllServices(){

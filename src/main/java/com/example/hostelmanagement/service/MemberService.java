@@ -42,5 +42,11 @@ public class MemberService {
     public List<Complaint> getAllComplaintsOfMember(Member m){
         return complaintDao.getComplaintsOfMember(m.getMid(),m.getRole());
     }
+    public Member getMember(Integer mid, String role){
+        return memberDao.getMember(mid, role);
+    }
+    public List<String> getAllRoles() {
+        return memberDao.getAllRoles();
+    }
 }
 
