@@ -37,8 +37,13 @@ public class DuesDao {
         return jdbcTemplate.update(sql, idx);
     }
     public int getTotalOfUser(Integer mid, String role) {
+        try{
         final String sql = String.format("SELECT SUM(dueAmount) FROM DUES WHERE imposedOnId=%d and imposedOnRole='%s'", mid, role);
         return jdbcTemplate.queryForObject(sql, Integer.class);
+        }
+        catch(Exception e) {
+            return 0;
+        }
     }
     public List<Dues> getAllDuesOfUser(Integer mid, String role) {
         final String sql = String.format("SELECT * FROM DUES WHERE imposedOnId=%d and imposedOnRole='%s'", mid, role);
