@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS COMPLAINTS(
   FOREIGN KEY (postedById, postedByRole) REFERENCES MEMBERS(MID, ROLE)
 );
 
+CREATE INDEX complaints_idx ON COMPLAINTS (postedById, postedByRole);
+
 create table users(
                       username      varchar(50) not null primary key,
                       password      varchar(500) not null,
@@ -69,8 +71,9 @@ CREATE TABLE IF NOT EXISTS MESSAGES(
                                          sentAt      datetime default current_timestamp not null,
                                          FOREIGN KEY (sentById, sentByRole) REFERENCES MEMBERS(MID, ROLE),
                                         FOREIGN KEY (grpId) REFERENCES MESSAGE_GROUP(grpId)
-
 );
+
+CREATE INDEX messages_idx ON MESSAGES (grpId);
 
 CREATE TABLE IF NOT EXISTS GROUP_MEMBERSHIP(
     id int AUTO_INCREMENT primary key,
@@ -81,6 +84,8 @@ CREATE TABLE IF NOT EXISTS GROUP_MEMBERSHIP(
     FOREIGN KEY (memberId, memberRole) REFERENCES MEMBERS(MID, ROLE),
     FOREIGN KEY (grpId) REFERENCES MESSAGE_GROUP(grpId)
 );
+CREATE INDEX group_membership_idx_grpId ON  GROUP_MEMBERSHIP(grpId);
+CREATE INDEX group_membership_idx_member ON  GROUP_MEMBERSHIP(memberId,memberRole);
 
 ALTER TABLE GROUP_MEMBERSHIP ADD  unreadCnt int not null default 0;
 
@@ -102,6 +107,8 @@ create table if not exists services(
     FOREIGN KEY (assignedToId, assignedToRole) REFERENCES MEMBERS(MID, ROLE)
 );
 
+CREATE INDEX services_idx ON  services(assignedToId,assignedToRole);
+
 ALTER TABLE MEMBERS MODIFY COLUMN  ROLE  ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN','STAFF') NOT NULL;
 ALTER TABLE users MODIFY COLUMN  role  ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN','STAFF') NOT NULL;
 ALTER TABLE GROUP_MEMBERSHIP MODIFY COLUMN  memberRole  ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN','STAFF') NOT NULL;
@@ -119,6 +126,7 @@ create table if not exists dues (
     foreign key(imposedOnId, imposedOnRole) references MEMBERS(mid, role)
 );
 
+CREATE INDEX dues_idx ON  dues(imposedOnId,imposedOnRole);
 
 
 
