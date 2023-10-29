@@ -40,7 +40,7 @@
             <div style="width: 30%">Threshold Quantity</div>
             <div style="width: 30%">Quantity</div>
         </div>
-        <div class="card" th:each="item: ${inventoryList}" style="box-shadow: none; border: 1px solid black; display: flex; flex-direction: row; justify-content: space-around">
+        <div  class="card iterable" th:each="item: ${inventoryList}" style="box-shadow: none; border: 1px solid black; display: flex; flex-direction: row; justify-content: space-around">
             <div style="display: flex; flex-direction: row; width: 10%;">
                 <input type="checkbox" class="afterEdit removal" th:itemId="${item.itemId}" style="padding: 4px">
                 <div class="beforeEdit" th:text="${'#'+item.getItemId()}"></div>
@@ -55,6 +55,20 @@
         </div>
     </div>
     <script type="text/javascript">
+
+        let cards = document.getElementsByClassName("iterable");
+        for(let i=0;i<cards.length;i++) {
+            let threshold = cards[i].children[2].innerHTML;
+            if(threshold === '-') threshold = 0;
+            else threshold = parseInt(threshold);
+            let val = parseInt(cards[i].children[3].children[1].innerHTML);
+            if(val < threshold) {
+                cards[i].style.color = 'red';
+            }else{
+                cards[i].style.color = 'black';
+            }
+        }
+
         let modal = document.getElementById("popup");
         let editor = document.getElementsByClassName("editor");
         let afterEditor = document.getElementsByClassName("afterEdit");

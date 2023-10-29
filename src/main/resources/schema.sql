@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS MEMBERS(
     MID         INT(8)  NOT NULL,
     ROLE        ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN') NOT NULL,
     FIRSTNAME   VARCHAR(15) NOT NULL,
-    LASTNAME    VARCHAR(25),
+    LASTNAME    VARCHAR(25) default ' ',
     BATCH       INT CHECK(BATCH > 1918 && BATCH < 2030) NOT NULL,
     BRANCH      ENUM('CSE', 'MNC', 'ECE', 'EEE', 'MEC', 'CHE', 'MET', 'MIN', 'CIV', 'CER', 'PHE', 'APD', 'NON') NOT NULL,
     DATEOFBIRTH DATE NOT NULL,
@@ -46,10 +46,10 @@ insert into members(MID, ROLE, FIRSTNAME, BATCH, BRANCH, DATEOFBIRTH, EMAIL, PHO
 VALUES (13075000, 'WARDEN', 'WARDEN', 1919, 'NON', '1919-01-01', 'warden.vs@itbhu.ac.in' ,'1234567890');
 
 insert into users (username, password, enabled, mid, role)
-values('WARDEN13075000', '$2a$10$8FO4rPlvg7aPJe5QUIbcdeCT9eiOZD3v0RVvhSh4Se9hBtLabffqK', true, 13075000, 'warden');
+values('WARDEN13075000', '$2a$10$ymyxESdBrXbkDoT9L7E03u0jO3HB7iD87nbzJaa/hy27ho2z/Vmee', true, 13075000, 'warden');
 
 insert into authorities (username, authority)
-values('WARDEN13075000', 'WARDEN');
+values('WARDEN13075000', 'warden');
 
 CREATE TABLE IF NOT EXISTS MESSAGE_GROUP(
                                        grpId         int AUTO_INCREMENT primary key,
