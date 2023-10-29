@@ -42,7 +42,7 @@ create table authorities (
 
 create unique index ix_auth_username on authorities (username,authority);
 
-insert into members(MID, ROLE, FIRSTNAME, BATCH, BRANCH, DATEOFBIRTH, EMAIL, PHONENUMBER)
+insert into MEMBERS(MID, ROLE, FIRSTNAME, BATCH, BRANCH, DATEOFBIRTH, EMAIL, PHONENUMBER)
 VALUES (13075000, 'WARDEN', 'WARDEN', 1919, 'NON', '1919-01-01', 'warden.vs@itbhu.ac.in' ,'1234567890');
 
 insert into users (username, password, enabled, mid, role)
@@ -104,8 +104,8 @@ create table if not exists services(
 
 ALTER TABLE MEMBERS MODIFY COLUMN  ROLE  ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN','STAFF') NOT NULL;
 ALTER TABLE users MODIFY COLUMN  role  ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN','STAFF') NOT NULL;
-ALTER TABLE group_membership MODIFY COLUMN  memberRole  ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN','STAFF') NOT NULL;
-ALTER TABLE messages MODIFY COLUMN  sentByRole  ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN','STAFF') NOT NULL;
+ALTER TABLE GROUP_MEMBERSHIP MODIFY COLUMN  memberRole  ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN','STAFF') NOT NULL;
+ALTER TABLE MESSAGES MODIFY COLUMN  sentByRole  ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN','STAFF') NOT NULL;
 ALTER TABLE MESSAGE_GROUP MODIFY COLUMN  adminRole  ENUM('STUDENT', 'PARLIAMENT', 'WARDEN', 'PROFESSOR', 'DEAN','STAFF') NOT NULL;
 
 create table if not exists dues (
@@ -116,7 +116,7 @@ create table if not exists dues (
     dueType varchar(50) not null,
     dueAmount int not null,
     primary key(dueId),
-    foreign key(imposedOnId, imposedOnRole) references members(mid, role)
+    foreign key(imposedOnId, imposedOnRole) references MEMBERS(mid, role)
 );
 
 

@@ -20,7 +20,7 @@ public class DuesDao {
     }
 
     public int addNewDue(Dues dues) {
-        final String sql = "INSERT INTO DUES(imposedOnId, imposedOnRole, dueDate, dueAmount, dueType) VALUES(?, ?, ?, ?, ?)";
+        final String sql = "INSERT INTO dues(imposedOnId, imposedOnRole, dueDate, dueAmount, dueType) VALUES(?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
                 dues.getImposedOnId(),
                 dues.getImposedOnRole(),
@@ -30,7 +30,7 @@ public class DuesDao {
         );
     }
     public List<Dues> getAllDues() {
-        return jdbcTemplate.query("SELECT * FROM DUES", new BeanPropertyRowMapper<>(Dues.class));
+        return jdbcTemplate.query("SELECT * FROM dues", new BeanPropertyRowMapper<>(Dues.class));
     }
     public int removeDue(int idx) {
         final String sql = "delete from dues where dueId=?";
