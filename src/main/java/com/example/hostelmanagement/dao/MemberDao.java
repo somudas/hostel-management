@@ -41,7 +41,7 @@ public class MemberDao {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Member.class));
     }
     public List<String> getAllRoles() {
-        return jdbcTemplate.queryForList("select distinct role from members", String.class);
+        return jdbcTemplate.queryForList("select distinct ROLE from MEMBERS", String.class);
     }
     public List<MessageGroup> getAllGroups(Integer mid, String role) {
         final String sql = String.format("SELECT grpId,unreadCnt from GROUP_MEMBERSHIP where memberId=%d and memberRole='%s'", mid, role);

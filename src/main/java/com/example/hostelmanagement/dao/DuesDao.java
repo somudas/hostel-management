@@ -38,7 +38,7 @@ public class DuesDao {
     }
     public int getTotalOfUser(Integer mid, String role) {
         try{
-        final String sql = String.format("SELECT SUM(dueAmount) FROM DUES WHERE imposedOnId=%d and imposedOnRole='%s'", mid, role);
+        final String sql = String.format("SELECT SUM(dueAmount) FROM dues WHERE imposedOnId=%d and imposedOnRole='%s'", mid, role);
         return jdbcTemplate.queryForObject(sql, Integer.class);
         }
         catch(Exception e) {
@@ -46,7 +46,7 @@ public class DuesDao {
         }
     }
     public List<Dues> getAllDuesOfUser(Integer mid, String role) {
-        final String sql = String.format("SELECT * FROM DUES WHERE imposedOnId=%d and imposedOnRole='%s'", mid, role);
+        final String sql = String.format("SELECT * FROM dues WHERE imposedOnId=%d and imposedOnRole='%s'", mid, role);
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Dues.class));
     }
 }
