@@ -30,7 +30,7 @@
             <div class="card" th:each="due : ${allDues}" style="width: 50%; box-shadow: 0 0 0 white; border: 1px solid black; display:flex; flex-direction: row; justify-content: space-between">
                 <div style="display:flex; flex-direction: column; gap: 4px">
                     <div style="font-size: larger; font-weight: bold" th:text="${due.dueType}"></div>
-                    <div th:text="${'by ' + due.imposedOnRole + ' ' + due.imposedOnId}"></div>
+                    <div th:text="${'imposed on ' + due.imposedOnRole + ' ' + due.imposedOnId}"></div>
                     <div style="font-weight: 300; font-size: small" th:text="${'due date: ' + due.dueDate}"></div>
                 </div>
                 <div style="display:flex; flex-direction: column; justify-content: space-between;">

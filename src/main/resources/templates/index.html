@@ -20,9 +20,10 @@
             <p>This web app allows you to manage <br> all your hostel needs.</p>
             </div>
 
-            <a id="getStarted" style="text-decoration: none; color: white;" href="/register">
+            <a sec:authorize="isAuthenticated()" id="getStarted" style="text-decoration: none; color: white;" href="/chats">
                 Get started </a>
-
+                <a sec:authorize="!isAuthenticated()" id="getStarted" style="text-decoration: none; color: white;" href="/chats">
+                    Get started </a>
             </div>
         </div>
         <div style="padding-block: 20px;padding-inline: 200px;">
@@ -75,7 +76,7 @@
             <div style="text-align: right; ">Contributors</div>
             <div style="font-size: 12px; text-align: right">
             Soumyadeep Das <br>
-            Ujjwal Modi <br>
+            Ujjawal Modi <br>
             Arindam Srivastava <br>
             Satyam Chitransh <br>
             Nachiketa Sharma <br>
