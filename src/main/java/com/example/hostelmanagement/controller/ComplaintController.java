@@ -45,6 +45,7 @@ public class ComplaintController {
         model.addAttribute("isAdmin", user.getRole().equals("WARDEN"));
         model.addAttribute("isResolved", true);
         model.addAttribute("complaints", filterByStatus(principal, complaintStatus.RESOLVED));
+        model.addAttribute("role",user.getRole());
         return "complaint";
     }
     @GetMapping("/complaints/unresolved")
@@ -53,11 +54,14 @@ public class ComplaintController {
         model.addAttribute("isAdmin", user.getRole().equals("WARDEN"));
         model.addAttribute("isResolved", false);
         model.addAttribute("complaints", filterByStatus(principal, complaintStatus.UNRESOLVED));
+        model.addAttribute("role",user.getRole());
         return "complaint";
     }
     @GetMapping("/complaints/register")
     public String registerComplaint(Principal principal, Model model) {
+        User user = memberService.findUser(principal.getName());
 //        model.addAttribute("isResolved", false);
+        model.addAttribute("role",user.getRole());
         model.addAttribute("complaint", new Complaint());
         return "registerComplaint";
     }

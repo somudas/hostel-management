@@ -72,6 +72,7 @@ public class MessageController {
         members.removeIf(mem -> mem.getMid().equals(currentUser.getMid()) && mem.getRole().equals(currentUser.getRole()));
         model.addAttribute("messageGroups", msgGrps);
         model.addAttribute("allMembers", members);
+        model.addAttribute("role", currentUser.getRole());
         return "chat";
     }
     @GetMapping("/api/groups")

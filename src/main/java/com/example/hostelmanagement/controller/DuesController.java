@@ -35,6 +35,7 @@ public class DuesController {
         }else{
             model.addAttribute("allDues", duesService.getAllDues());
         }
+        model.addAttribute("role",user.getRole());
         return "dues";
     }
     @GetMapping("/dues/add")
@@ -45,6 +46,7 @@ public class DuesController {
         model.addAttribute("allMembers", memberService.viewAll());
         List<String> allRoles = memberService.getAllRoles();
         model.addAttribute("allRoles", allRoles);
+        model.addAttribute("role",user.getRole());
         return "registerDues";
     }
     @PostMapping("/dues/add")

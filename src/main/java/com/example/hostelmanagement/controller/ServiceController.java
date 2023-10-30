@@ -36,6 +36,7 @@ public class ServiceController {
             model.addAttribute("services", serviceService.getAllServicesAssignedToMember(user.getMid(), user.getRole()));
         }
         model.addAttribute("isAdmin", user.getRole().equals("WARDEN"));
+        model.addAttribute("role",user.getRole());
         return "services";
     }
 
@@ -59,8 +60,10 @@ public class ServiceController {
 
     @GetMapping("/services/add")
     public String addService(Principal principal, Model model) {
+        User user = memberService.findUser(principal.getName());
         model.addAttribute("service", new Service());
         model.addAttribute("allMembers",memberService.viewAll());
+        model.addAttribute("role",user.getRole());
         return "registerService";
     }
 }

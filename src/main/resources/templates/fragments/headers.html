@@ -3,11 +3,11 @@
         <div style="font-weight: bolder; font-size: x-large">H-manage+</div>
         <div class="menu">
             <a href="/">Home</a>
-            <a href="/complaints/unresolved">Complaints</a>
-            <a href="/inventory">Inventory</a>
-            <a href="/services">Services</a>
-            <a href="/chats">Chat</a>
-            <a href="/dues">Dues</a>
+            <a sec:authorize="isAuthenticated()" th:if="${role=='WARDEN' or role=='STUDENT'}" href="/complaints/unresolved">Complaints</a>
+            <a sec:authorize="isAuthenticated()" th:if="${role=='WARDEN'}" href="/inventory">Inventory</a>
+            <a sec:authorize="isAuthenticated()" th:if="${role=='WARDEN' or role=='STAFF'}" href="/services">Services</a>
+            <a sec:authorize="isAuthenticated()" href="/chats">Chat</a>
+            <a sec:authorize="isAuthenticated()" href="/dues">Dues</a>
         </div>
         <div>
             <div sec:authorize="isAuthenticated()" style="display: flex; flex-direction: row; gap: 12px">

@@ -32,6 +32,7 @@ public class InventoryController {
         List<Inventory> inventoryList = inventoryService.getAllInventoryData();
         model.addAttribute("inventoryList", inventoryList);
         model.addAttribute("inventory", new Inventory());
+        model.addAttribute("role",currentUser.getRole());
         return "inventory";
     }
 

@@ -32,6 +32,11 @@ public class HomeController {
     }
     @GetMapping("/")
     public String home(Principal principal, Model model) {
+        if(principal!=null)
+        {
+            User currentUser= memberService.findUser(principal.getName());
+            model.addAttribute("role",currentUser.getRole());
+        }
         model.addAttribute("loggedIn", principal==null);
         return "index";
     }
@@ -88,6 +93,7 @@ public class HomeController {
         User user = memberService.findUser(principal.getName());
         Member member = memberService.getMember(user.getMid(), user.getRole());
         model.addAttribute("member", member);
+        model.addAttribute("role",user.getRole());
         return "profile";
     }
 
