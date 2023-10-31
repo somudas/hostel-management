@@ -40,7 +40,7 @@
                         var value2 = $('#insti_id').val();
                         var concatenatedValue = value1 + value2;
                         $('#username').val(concatenatedValue);
-
+                        console.log(concatenatedValue);
                         $(this).unbind('submit').submit();
                     });
                 });
